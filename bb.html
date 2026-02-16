@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Para Ti ❤️</title>
+
+<style>
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(180deg,#ffd6df,#f7c8d5);
+    font-family:'Segoe UI';
+    overflow:hidden;
+}
+
+/* TARJETA */
+.container{
+    width:430px;
+    height:520px;
+    background:#f3d9df;
+    border-radius:35px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    box-shadow:0 25px 50px rgba(0,0,0,.18);
+    position:relative;
+}
+
+/* CAJA */
+.gift{
+    position:relative;
+    width:180px;
+    height:120px;
+    background:linear-gradient(135deg,#ff3b30,#d11f1f);
+    border-radius:10px;
+    box-shadow:
+        inset 0 8px 15px rgba(255,255,255,.35),
+        inset 0 -10px 20px rgba(0,0,0,.25),
+        0 18px 25px rgba(0,0,0,.25);
+}
+
+/* TAPA */
+.lid{
+    position:absolute;
+    width:195px;
+    height:45px;
+    top:-35px;
+    left:-7.5px;
+    background:linear-gradient(135deg,#ff4b40,#b51616);
+    border-radius:10px;
+    transform-origin:bottom;
+}
+
+/* LISTONES */
+.ribbon-v{
+    position:absolute;
+    width:26px;
+    height:120px;
+    background:linear-gradient(180deg,#ffe066,#f4b400);
+    left:50%;
+    transform:translateX(-50%);
+}
+
+.ribbon-h{
+    position:absolute;
+    width:195px;
+    height:20px;
+    top:-8px;
+    left:-7.5px;
+    background:linear-gradient(180deg,#ffe066,#f4b400);
+    border-radius:6px;
+}
+
+/* MOÑO */
+.bow{
+    position:absolute;
+    top:-58px;
+    left:50%;
+    transform:translateX(-50%);
+    width:120px;
+    height:60px;
+    cursor:grab;
+}
+
+.loop{
+    position:absolute;
+    width:60px;
+    height:40px;
+    background:linear-gradient(180deg,#ffe066,#f4b400);
+    border-radius:50% 50% 45% 45%;
+}
+
+.left{ left:0; }
+.right{ right:0; }
+
+.knot{
+    position:absolute;
+    width:22px;
+    height:22px;
+    background:linear-gradient(180deg,#ffe066,#f4b400);
+    border-radius:50%;
+    left:50%;
+    top:10px;
+    transform:translateX(-50%);
+}
+
+/* TEXTO */
+.text{
+    margin-top:55px;
+    color:#7a4a4a;
+    font-size:20px;
+    text-align:center;
+    animation:pulse 1.2s infinite;
+}
+
+@keyframes pulse{
+    0%{transform:scale(1);opacity:.7;}
+    50%{transform:scale(1.08);opacity:1;}
+    100%{transform:scale(1);opacity:.7;}
+}
+
+/* CARTA */
+.letter{
+position:absolute;
+width:350px;
+max-height:460px;
+background:linear-gradient(180deg,#fffdf7,#ffeef3);
+border-radius:18px;
+padding:28px 22px 24px 22px;
+box-shadow:0 18px 40px rgba(0,0,0,.30);
+opacity:0;
+transform:translateY(150px) scale(.7);
+transition:1.2s;
+display:flex;
+flex-direction:column;
+align-items:center;
+overflow-y:auto;
+}
+
+
+
+.showLetter{
+    opacity:1;
+    transform:translateY(0) scale(1);
+}
+
+h2{ text-align:center; color:#d81b60; }
+p{ color:#5d4037; line-height:1.6; }
+.loveText{
+text-align:center;
+font-size:19px;
+color:#5a3a3a;
+line-height:1.7;
+margin-top:5px;
+font-family:'Georgia',serif;
+padding:0 10px;
+}
+
+.loveText b{
+display:block;
+margin-top:8px;
+font-size:22px;
+color:#d81b60;
+letter-spacing:1px;
+}
+
+
+.loveImg{
+    width:170px;
+    height:170px;
+    object-fit:cover;
+    margin:16px auto 10px auto;
+    border-radius:14px;
+    border:4px solid #fff;
+    box-shadow:0 10px 18px rgba(0,0,0,.25);
+}
+
+
+.musicBox{
+margin-top:auto;
+width:100%;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+}
+
+.musicText{
+margin-bottom:10px;
+color:#d81b60;
+font-weight:600;
+font-size:18px;
+font-family:'Segoe UI';
+}
+
+/* BOTON PLAY BONITO */
+.playBtn{
+width:60px;
+height:60px;
+border-radius:50%;
+border:none;
+background:radial-gradient(circle at 30% 30%,#ff7ab6,#ff2d7a);
+color:white;
+font-size:26px;
+cursor:pointer;
+box-shadow:0 8px 18px rgba(0,0,0,.30);
+transition:.25s;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+.playBtn:hover{
+transform:scale(1.12);
+}
+
+.playBtn:active{
+transform:scale(.92);
+}
+
+
+.playBtn:hover{
+    transform:scale(1.15);
+}
+
+.playBtn:active{
+    transform:scale(.95);
+}
+h2{
+    text-align:center;
+    color:#e91e63;
+    font-size:28px;
+    margin-top:0;
+    margin-bottom:12px;
+    letter-spacing:1px;
+    font-family:'Georgia',serif;
+}
+
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+<div id="gift" class="gift">
+
+```
+<div id="lid" class="lid"></div>
+<div id="ribbonH" class="ribbon-h"></div>
+<div id="ribbonV" class="ribbon-v"></div>
+
+<div id="bow" class="bow">
+    <div class="loop left"></div>
+    <div class="loop right"></div>
+    <div class="knot"></div>
+</div>
+
+</div>
+
+<div id="text" class="text">
+Desliza el listón<br>hacia abajo
+</div>
+
+<div id="letter" class="letter">
+
+<h2>Para Ti ❤️</h2>
+
+<p class="loveText">
+   Eres mi lugar favorito en el mundo pamquesito🥺🥺.<br>
+    Todo de ti me encanta, y gracias por todo,<br>
+    <b>TE AMOOOOOO.</b>
+</p>
+
+<img src="7ac4bfcb3c37fe7c6bd14d17941e5f4d.jpg" class="loveImg">
+
+<div class="musicBox">
+    <span class="musicText">nuestra canción… 🎵</span>
+    <button id="playBtn" class="playBtn">▶</button>
+</div>
+
+<audio id="song" src="cancion.mp3"></audio>
+```
+
+</div>
+
+
+</div>
+
+<script>
+
+const bow = document.getElementById("bow");
+const lid = document.getElementById("lid");
+const ribbonV = document.getElementById("ribbonV");
+const ribbonH = document.getElementById("ribbonH");
+const text = document.getElementById("text");
+const letter = document.getElementById("letter");
+
+let dragging=false;
+let startY=0;
+
+/* empezar a jalar */
+bow.addEventListener("mousedown",e=>{
+    dragging=true;
+    startY=e.clientY;
+});
+
+document.addEventListener("mousemove",e=>{
+    if(!dragging) return;
+
+    let distance=e.clientY-startY;
+    if(distance<0) return;
+
+    /* moño baja */
+    bow.style.transform=`translate(-50%,${distance}px)`;
+
+    /* listones se aflojan */
+    ribbonV.style.transform=`translateX(-50%) translateY(${distance}px)`;
+    ribbonH.style.transform=`translateY(${distance/2}px)`;
+
+    /* tapa se abre poco a poco */
+    let angle=Math.min(distance*0.7,150);
+    lid.style.transform=`rotateX(${angle}deg)`;
+
+    /* cambio de textos */
+    if(distance>30)
+        text.innerHTML="Sigue jalando…";
+
+    if(distance>120)
+        text.innerHTML="¡Suelta ahora!";
+});
+
+/* soltar */
+document.addEventListener("mouseup",()=>{
+    if(!dragging) return;
+    dragging=false;
+
+    /* apertura final */
+    lid.style.transform="rotateX(150deg) translateY(-10px)";
+    ribbonV.style.opacity="0";
+    ribbonH.style.opacity="0";
+    bow.style.opacity="0";
+    text.style.display="none";
+
+    setTimeout(()=>{
+        letter.classList.add("showLetter");
+    },900);
+});
+
+/* soporte celular */
+bow.addEventListener("touchstart",e=>{
+    dragging=true;
+    startY=e.touches[0].clientY;
+});
+
+document.addEventListener("touchmove",e=>{
+    if(!dragging) return;
+    let distance=e.touches[0].clientY-startY;
+    if(distance<0) return;
+
+    bow.style.transform=`translate(-50%,${distance}px)`;
+    ribbonV.style.transform=`translateX(-50%) translateY(${distance}px)`;
+    ribbonH.style.transform=`translateY(${distance/2}px)`;
+
+    let angle=Math.min(distance*0.7,150);
+    lid.style.transform=`rotateX(${angle}deg)`;
+
+    if(distance>30)
+        text.innerHTML="Sigue jalando…";
+
+    if(distance>120)
+        text.innerHTML="¡Suelta ahora!";
+});
+
+document.addEventListener("touchend",()=>{
+    if(!dragging) return;
+    dragging=false;
+
+    lid.style.transform="rotateX(150deg) translateY(-10px)";
+    ribbonV.style.opacity="0";
+    ribbonH.style.opacity="0";
+    bow.style.opacity="0";
+    text.style.display="none";
+
+    setTimeout(()=>{
+        letter.classList.add("showLetter");
+    },900);
+});
+/* REPRODUCIR MUSICA */
+const playBtn = document.getElementById("playBtn");
+const song = document.getElementById("song");
+
+let playing=false;
+
+playBtn.addEventListener("click",()=>{
+    if(!playing){
+        song.play();
+        playBtn.innerHTML="⏸";
+        playing=true;
+    }else{
+        song.pause();
+        playBtn.innerHTML="▶";
+        playing=false;
+    }
+});
+
+</script>
+
+</body>
+</html>
