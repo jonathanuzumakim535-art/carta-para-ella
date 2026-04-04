@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Acceso secreto 💖</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&family=Great+Vibes&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background: linear-gradient(135deg,#ff4e9b,#ff7ab6,#ffd1e8);
+    font-family:Poppins;
+}
+
+/* TARJETA */
+.card{
+    width:420px;
+    padding:40px;
+    border-radius:25px;
+    background:rgba(255,255,255,0.15);
+    backdrop-filter: blur(18px);
+    box-shadow:0 25px 60px rgba(0,0,0,.3);
+    text-align:center;
+    color:white;
+    animation: aparecer 1s ease;
+}
+
+@keyframes aparecer{
+from{opacity:0; transform:translateY(30px)}
+to{opacity:1; transform:translateY(0)}
+}
+
+h1{
+    font-family:'Great Vibes';
+    font-size:50px;
+    margin-bottom:10px;
+}
+
+p{margin-bottom:25px; opacity:.9}
+
+input{
+    width:100%;
+    padding:14px;
+    margin:10px 0;
+    border:none;
+    border-radius:12px;
+    outline:none;
+    font-size:15px;
+}
+
+button{
+    margin-top:15px;
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:30px;
+    background:white;
+    color:#ff4e9b;
+    font-weight:600;
+    font-size:18px;
+    cursor:pointer;
+    transition:.3s;
+}
+button:hover{transform:scale(1.05)}
+
+.error{
+    margin-top:10px;
+    color:#fff;
+    opacity:0;
+    transition:.5s;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+    <h1>Acceso secreto 💌</h1>
+    <p>Solo alguien especial puede entrar</p>
+
+    
+    <input id="color" placeholder="mi color favorito?">
+
+    <button onclick="verificar()">Entrar 💖</button>
+    <div class="error" id="error">Ups… intenta otra vez 😢</div>
+</div>
+
+<script>
+function verificar(){
+    let color=document.getElementById("color").value.toLowerCase();
+
+    /* CAMBIA ESTAS RESPUESTAS POR LAS REALES */
+    if(color=="verde"){
+        window.location.href="sorpresa.html"; 
+    }else{
+        document.getElementById("error").style.opacity="1";
+    }
+}
+</script>
+
+</body>
+</html>

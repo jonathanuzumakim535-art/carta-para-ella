@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Nuestra historia 💖</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&family=Great+Vibes&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+    font-family:Poppins;
+    background:linear-gradient(135deg,#ff4e9b,#ff7ab6,#ffd1e8);
+    color:white;
+    text-align:center;
+}
+
+/* TITULO */
+.tiempo{
+    margin-top:40px;
+    font-family:'Great Vibes';
+    font-size:70px;
+}
+
+/* SOBRE */
+.sobre{
+    width:180px;
+    margin:20px auto;
+    cursor:pointer;
+    animation: latido 1.5s infinite;
+}
+
+@keyframes latido{
+0%{transform:scale(1)}
+50%{transform:scale(1.1)}
+100%{transform:scale(1)}
+}
+
+button{
+    padding:15px 35px;
+    border:none;
+    border-radius:30px;
+    background:white;
+    color:#ff4e9b;
+    font-size:18px;
+    cursor:pointer;
+    margin-bottom:40px;
+}
+
+/* COLLAGE */
+.galeria{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:15px;
+    padding:30px 10%;
+}
+.galeria img{
+    width:100%;
+    height:220px;
+    object-fit:cover;
+    border-radius:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,.3);
+}
+
+/* LINEA DEL TIEMPO */
+.timeline{
+    margin:80px auto;
+    width:600px;
+    position:relative;
+}
+.timeline::after{
+    content:'';
+    position:absolute;
+    width:4px;
+    background:white;
+    top:0;
+    bottom:0;
+    left:50%;
+}
+
+.event{
+    padding:20px;
+    width:50%;
+    position:relative;
+}
+.left{left:0;text-align:right;}
+.right{left:50%;}
+.event::after{
+    content:'💖';
+    position:absolute;
+    top:20px;
+    right:-14px;
+}
+.right::after{left:-14px}
+
+/* VIDEO */
+video{
+    width:60%;
+    margin-top:30px;
+    border-radius:20px;
+    box-shadow:0 15px 40px rgba(0,0,0,.4);
+}
+
+/* WHATSAPP */
+textarea{
+    width:60%;
+    height:120px;
+    margin-top:20px;
+    border:none;
+    border-radius:15px;
+    padding:15px;
+    font-size:16px;
+}
+.whatsapp{
+    margin:20px;
+    background:#25D366;
+    color:white;
+}
+/* ===== SOBRE REAL ANIMADO ===== */
+.envelope-wrapper{
+    margin-top:20px;
+    display:flex;
+    justify-content:center;
+}
+
+.envelope{
+    position:relative;
+    width:220px;
+    height:140px;
+    cursor:pointer;
+}
+
+.envelope .base{
+    position:absolute;
+    width:100%;
+    height:100%;
+    background:#fff;
+    border-radius:8px;
+}
+
+.envelope .flap{
+    position:absolute;
+    width:100%;
+    height:100%;
+    background:#ffe3f1;
+    clip-path: polygon(0 0, 50% 60%, 100% 0);
+    transform-origin:top;
+    transition:1s;
+}
+
+.envelope .heart{
+    position:absolute;
+    top:45px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:35px;
+}
+
+/* CARTA POPUP */
+.carta{
+    position:fixed;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%) scale(0.5);
+    width:520px;
+    background:white;
+    padding:40px 50px;
+    border-radius:25px;
+    box-shadow:0 30px 80px rgba(0,0,0,.4);
+    color:#555;
+    opacity:0;
+    pointer-events:none;
+    transition:0.8s;
+}
+
+.carta.mostrar{
+    opacity:1;
+    transform:translate(-50%,-50%) scale(1);
+    pointer-events:auto;
+}
+
+/* BOTON CERRAR */
+.cerrar{
+    position:absolute;
+    top:15px;
+    right:20px;
+    background:#ff4e9b;
+    color:white;
+    border:none;
+    border-radius:50%;
+    width:35px;
+    height:35px;
+    cursor:pointer;
+    font-size:18px;
+}
+
+/* abrir sobre */
+.envelope.abierto .flap{
+    transform:rotateX(180deg);
+}
+
+/* ===== TIMELINE BONITA ===== */
+.timeline{
+    width:700px;
+    margin:80px auto;
+    position:relative;
+}
+
+.timeline::before{
+    content:'';
+    position:absolute;
+    left:50%;
+    width:4px;
+    height:100%;
+    background:rgba(255,255,255,0.7);
+}
+
+.t-event{
+    width:50%;
+    padding:30px;
+    position:relative;
+}
+
+.t-event.left{left:0;text-align:right;}
+.t-event.right{left:50%;}
+
+.t-event .box{
+    background:rgba(255,255,255,0.15);
+    padding:20px;
+    border-radius:20px;
+    backdrop-filter:blur(10px);
+    box-shadow:0 10px 25px rgba(0,0,0,.2);
+}
+
+.t-event::after{
+    content:'💖';
+    position:absolute;
+    top:30px;
+    right:-14px;
+}
+.t-event.right::after{left:-14px}
+</style>
+</head>
+
+<body>
+
+<h1 class="tiempo">1 mes y medio 💖</h1>
+
+<div class="envelope-wrapper">
+  <div class="envelope" onclick="abrirSobre()" id="sobre">
+      <div class="base"></div>
+      <div class="flap"></div>
+      <div class="heart">💖</div>
+  </div>
+</div>
+
+<p>Haz click en el sobre 💌</p>
+
+<div class="carta" id="carta">
+
+    <button class="cerrar" onclick="cerrarCarta()">✕</button>
+
+    <h1>Para ti 💖</h1>
+    <p>
+        Gracias por llegar a mi vida y llenarla de alegría.  
+        Cada momento contigo se vuelve un recuerdo hermoso.  
+        <br><br>
+        Este mes y medio ha sido solo el comienzo de algo
+        que quiero que dure muchísimo tiempo.  
+        <br><br>
+        Te amo Katyyy 💖
+    </p>
+
+</div>
+<!-- COLLAGE -->
+<h2>Obra de Arte 😍👇 📸</h2>
+<div class="galeria">
+<img src="foto1.jpg">
+<img src="foto2.jpg">
+<img src="foto3.jpg">
+<img src="foto4.jpg">
+<img src="foto5.jpg">
+<img src="foto6.jpg">
+<img src="foto7.jpg">
+<img src="foto8.jpg">
+</div>
+
+<!-- LINEA DEL TIEMPO -->
+ <h2>Nuestra línea de Amor 💞</h2>
+
+<div class="timeline">
+  <div class="t-event left">
+      <div class="box">El día que nos conocimos 💕</div>
+  </div>
+
+  <div class="t-event right">
+      <div class="box">Nuestros tiktoks grabados ✨</div>
+  </div>
+
+  <div class="t-event left">
+      <div class="box">Cuando fuimos novios 😘</div>
+  </div>
+
+  <div class="t-event right">
+      <div class="box">1 mes y medio juntos 💖</div>
+  </div>
+</div>
+
+<!-- VIDEO -->
+<h2>Este video es para ti 🎥</h2>
+<video controls>
+    <source src="video.mp4" type="video/mp4">
+</video>
+
+<!-- WHATSAPP -->
+<h2>Escríbeme algo bonito 💌</h2>
+<textarea id="mensaje" placeholder="Escribe algo lindo..."></textarea>
+<br>
+<button class="whatsapp" onclick="enviarWhats()">Enviar a WhatsApp 💚</button>
+
+<script>
+function enviarWhats(){
+    let mensaje=document.getElementById("mensaje").value;
+    let numero="525577572444"; // PON TU NUMERO
+    window.open(`https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`);
+}
+function abrirSobre(){
+    document.getElementById("sobre").classList.add("abierto");
+    setTimeout(()=>{
+        document.getElementById("carta").classList.add("mostrar");
+    },600);
+}
+
+function cerrarCarta(){
+    document.getElementById("carta").classList.remove("mostrar");
+    setTimeout(()=>{
+        document.getElementById("sobre").classList.remove("abierto");
+    },300);
+}
+</script>
+
+</body>
+</html>
