@@ -1,0 +1,61 @@
+body{
+    margin:0;
+    height:1200vh;
+    background:black;
+    font-family: Arial, Helvetica, sans-serif;
+    overflow-x:hidden;
+    color:white;
+}
+
+/* CANVAS estrellas */
+#stars{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    z-index:-1;
+}
+
+/* CONTENEDOR SCROLL */
+.scroll-container{
+    position:relative;
+    text-align:center;
+}
+
+/* MENSAJES */
+.mensaje{
+    position:absolute;
+    width:100%;
+    font-size:45px;
+    opacity:0;
+    transform:scale(0.5);
+    transition:1s;
+}
+
+.mensaje.visible{
+    opacity:1;
+    transform:scale(1);
+}
+
+.final{
+    font-size:70px;
+    color:pink;
+}
+
+/* FOTOS */
+.foto{
+    position:absolute;
+    left:50%;
+    transform:translateX(-50%) scale(0.3);
+    width:300px;
+    border-radius:20px;
+    box-shadow:0 0 40px pink;
+    opacity:0;
+    transition:1s;
+}
+
+.foto.visible{
+    opacity:1;
+    transform:translateX(-50%) scale(1);
+}

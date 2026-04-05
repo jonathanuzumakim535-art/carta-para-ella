@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Viaje contigo 🚀</title>
+
+<style>
+body{
+    margin:0;
+    overflow:hidden;
+    background:#050510;
+    font-family: 'Segoe UI', sans-serif;
+    color:white;
+}
+
+/* pantalla inicial */
+#inicio{
+    position:fixed;
+    width:100%;
+    height:100vh;
+    background:#050510;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    z-index:10;
+}
+
+.botonViaje{
+    width:160px;
+    height:160px;
+    border-radius:50%;
+    background:linear-gradient(45deg,#ff4ecd,#7b7bff);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:60px;
+    cursor:pointer;
+    box-shadow:0 0 40px #ff4ecd;
+    animation: latido 2s infinite;
+}
+@keyframes latido{
+    0%{transform:scale(1)}
+    50%{transform:scale(1.1)}
+    100%{transform:scale(1)}
+}
+
+#inicio p{
+    margin-top:20px;
+    font-size:22px;
+    opacity:.8;
+}
+
+/* canvas fondo */
+#warpCanvas{
+    position:fixed;
+    top:0;
+    left:0;
+}
+
+/* contenedor galaxia scroll */
+#galaxia{
+    position:absolute;
+    width:4000px;
+    height:3000px;
+    cursor:grab;
+}
+
+/* frases */
+.frase{
+    position:absolute;
+    font-size:28px;
+    opacity:0;
+    transition:1.5s;
+    text-align:center;
+}
+
+/* stickers */
+.sticker{
+    position:absolute;
+    font-size:50px;
+    opacity:0;
+    transition:1.5s;
+}
+.foto{
+    position:absolute;
+    width:220px;
+    border-radius:20px;
+    box-shadow:0 0 25px rgba(255,255,255,0.4);
+    opacity:0;
+    transition:2s;
+    transform:scale(.8);
+}
+
+.foto:hover{
+    transform:scale(1.1);
+}
+.objeto{
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform-style:preserve-3d;
+    pointer-events:none;
+}
+
+.frase{
+    color:#ff77ff;
+    font-size:28px;
+    text-shadow:0 0 15px #ff4ecd;
+    white-space:nowrap;
+}
+
+.sticker{
+    font-size:45px;
+}
+
+.foto{
+    width:140px;
+    border-radius:18px;
+    box-shadow:0 0 20px white;
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="inicio">
+    <div class="botonViaje" onclick="iniciarViaje()">🚀</div>
+    <p>Empezar viaje</p>
+</div>
+
+<canvas id="warpCanvas"></canvas>
+<div id="galaxia"></div>
+
+<script>
+// ===== WARP SPEED (lineas velocidad) =====
+const canvas = document.getElementById("warpCanvas");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let lines = [];
+for(let i=0;i<200;i++){
+    lines.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, z:Math.random()*200});
+}
+
+function drawWarp(){
+    ctx.fillStyle="#050510";
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+
+    ctx.strokeStyle="white";
+    ctx.lineWidth=2;
+
+    lines.forEach(l=>{
+        let px = (l.x - canvas.width/2) * (200/l.z) + canvas.width/2;
+        let py = (l.y - canvas.height/2) * (200/l.z) + canvas.height/2;
+        l.z -= 2;
+        if(l.z<=0) l.z=200;
+
+        ctx.beginPath();
+        ctx.moveTo(px,py);
+        ctx.lineTo(px+(px-canvas.width/2)*0.05, py+(py-canvas.height/2)*0.05);
+        ctx.stroke();
+    });
+
+    requestAnimationFrame(drawWarp);
+}
+
+// ===== FRASES + STICKERS =====
+const frases = [
+"Todo comenzó contigo 💖",
+"Eres mi lugar seguro 🏡",
+"Mi persona favorita del mundo 🌎",
+"Mi pensamiento diario ☀️",
+"Mi notificación favorita 📱",
+"Contigo todo es más bonito ✨",
+"Mi casualidad más perfecta 💫",
+"Mi paz después del caos 🌙",
+"Mi mejor aventura 🚀",
+"Mi sueño cumplido 💭",
+"Mi hogar eres tú 🫶",
+"Mi persona para todo 💞",
+"Mi destino favorito 🪐",
+"Mi amor infinito ♾️",
+"Mi siempre 💘"
+];
+
+const fotos = [
+"foto1.jpg",
+"foto2.jpg",
+"foto3.jpg",
+"foto4.jpg",
+"foto5.jpg",
+"foto6.jpg"
+];
+const stickers = ["💖","💘","💞","🌸","✨","🪐","💫","🌙"];
+
+function generarTunel(){
+
+    // MUCHAS FRASES
+    for(let i=0;i<40;i++){
+        crearObjeto("frase", frases[i % frases.length]);
+    }
+
+    // MUCHOS STICKERS
+    for(let i=0;i<40;i++){
+        crearObjeto("sticker", stickers[i % stickers.length]);
+    }
+
+    // MUCHAS FOTOS
+    for(let i=0;i<25;i++){
+        crearObjeto("foto", fotos[i % fotos.length]);
+    }
+}
+
+   const elementos = [];
+
+function crearObjeto(tipo, contenido){
+
+    const el = document.createElement("div");
+    el.className="objeto";
+
+    if(tipo=="frase"){
+        el.classList.add("frase");
+        el.innerText = contenido;
+    }
+
+    if(tipo=="sticker"){
+        el.classList.add("sticker");
+        el.innerText = contenido;
+    }
+
+    if(tipo=="foto"){
+        const img = document.createElement("img");
+        img.src = contenido;
+        img.className="foto";
+        el.appendChild(img);
+    }
+
+    document.body.appendChild(el);
+
+    elementos.push({
+        el: el,
+        x:(Math.random()-0.5)*2000,
+        y:(Math.random()-0.5)*1200,
+        z:Math.random()*3000
+    });
+}
+
+// ===== INICIAR VIAJE =====
+function iniciarViaje(){
+    document.getElementById("inicio").style.display="none";
+    drawWarp();
+    generarTunel();
+    animarTunel();
+}
+
+// ===== DRAG PARA MOVERTE =====
+let galaxia = document.getElementById("galaxia");
+let pos = {x:0,y:0}, mouse={x:0,y:0}, dragging=false;
+
+document.addEventListener("mousedown", e=>{
+    dragging=true;
+    mouse.x=e.clientX;
+    mouse.y=e.clientY;
+    galaxia.style.cursor="grabbing";
+});
+
+document.addEventListener("mouseup", ()=> {
+    dragging=false;
+    galaxia.style.cursor="grab";
+});
+
+document.addEventListener("mousemove", e=>{
+    if(!dragging) return;
+    pos.x += e.clientX - mouse.x;
+    pos.y += e.clientY - mouse.y;
+    galaxia.style.transform=`translate(${pos.x}px, ${pos.y}px)`;
+    mouse.x=e.clientX;
+    mouse.y=e.clientY;
+});
+function animarTunel(){
+
+    elementos.forEach(obj=>{
+        obj.z -= 12 // velocidad del viaje
+
+        // cuando pasan la cámara vuelven lejos
+        if(obj.z < 0){
+            obj.z = 3000;
+            obj.x = (Math.random()-0.5)*2000;
+            obj.y = (Math.random()-0.5)*1200;
+        }
+
+        const scale = 600 / obj.z;
+
+        obj.el.style.transform = `
+            translate(-50%, -50%)
+            translate3d(${obj.x}px, ${obj.y}px, ${obj.z}px)
+            scale(${scale})
+        `;
+
+        obj.el.style.opacity = scale;
+    });
+
+    requestAnimationFrame(animarTunel);
+}
+</script>
+
+</body>
+</html>
