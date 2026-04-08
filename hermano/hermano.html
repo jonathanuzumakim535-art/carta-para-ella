@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Sorpresa para mi hermano</title>
+
+<style>
+body{
+    margin:0;
+    background:#ffffff;
+    font-family:Verdana;
+    overflow-x:hidden;   /* solo bloquea el scroll lateral */
+}
+
+.top-pattern{
+    position:absolute;
+    top:0;
+    width:100%;
+    height:70px;
+    
+}
+
+.logo{position:absolute; top:20px; left:50%; transform:translateX(-50%); width:320px;}
+.left{position:absolute; top:160px; left:600px; color:#2c2c7c; font-size:22px;}
+.right{position:absolute; top:160px; right:600px; color:#2c2c7c; font-size:22px;}
+.mail{position:absolute; top:160px; left:50%; transform:translateX(-50%); font-size:40px;}
+.bear{
+    position:absolute;
+    bottom:550px;   /* antes estaba con top */
+    left:50%;
+    transform:translateX(-50%) scale(1);
+    width:170px;
+    transition:0.5s;
+}
+
+.window{
+    position:absolute;
+    top:500px;
+    left:50%;
+    transform:translateX(-50%);
+    width:550px;
+    background:#cfd8dc;
+    border:4px solid #2c2c7c;
+    border-radius:18px;
+    padding:20px;
+    box-shadow:0 10px 25px rgba(0,0,0,.2);
+}
+
+/* PARPADEO */
+.flash{
+    animation:blink .35s 2;
+}
+@keyframes blink{
+    0%{opacity:1;}
+    50%{opacity:0;}
+    100%{opacity:1;}
+}
+
+.msg{
+    text-align:center;
+    font-size:24px;
+    margin:25px 0;
+    white-space:pre-line;
+}
+
+.btns{
+    display:flex;
+    justify-content:center;
+    gap:20px;
+}
+
+button{
+    padding:14px 25px;
+    font-size:18px;
+    border:none;
+    border-radius:10px;
+    background:#2c2c7c;
+    color:white;
+    cursor:pointer;
+}
+button:hover{ transform:scale(1.1); }
+.logo{
+    position:absolute;
+    top:20px;
+    left:50%;
+    transform:translateX(-50%);
+    width:500px;   /* antes 320 */
+}
+/* pantallas */
+.pantalla{
+    position: relative;   /* antes fixed */
+    width:100%;
+    min-height:100vh;     /* permite crecer hacia abajo */
+    background:#ffffff;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding-top:40px;
+    transition: opacity .6s ease, transform .6s ease;
+}
+
+/* escondida */
+.oculto{
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(1.05);
+}
+
+/* animación al abrir */
+.mostrar{
+    opacity: 1;
+    pointer-events: auto;
+    transform: scale(1);
+}
+
+/* estilos visuales */
+.logo2{
+   position:absolute;
+    top:20px;
+    left:50%;
+    transform:translateX(-50%);
+    width:500px;   /* antes 320 */
+}
+
+
+
+.osito{
+    position:absolute;
+    top:212px;              /* justo arriba de la carta */
+    left:50%;
+    transform:translateX(-50%);
+    width:200px;
+}
+
+.carta{
+    position:absolute;
+    top:380px;
+    left:50%;
+    transform:translateX(-50%);
+    width:520px;
+    background:#cfd8dc;
+    border:4px solid #2c2c7c;
+    border-radius:18px;
+    padding:20px;
+    text-align:center;
+    box-shadow:0 10px 25px rgba(0,0,0,.2);
+}
+.carta h2{
+    margin:0 0 10px;
+}
+
+/* iconos */
+.botones{
+    position:absolute;
+    top:560px;
+    left:50%;
+    transform:translateX(-50%);
+    
+    display:grid;
+    grid-template-columns: repeat(2, 120px);
+    grid-gap:25px;
+    justify-content:center;
+}
+
+.botones img{
+    width:95px;
+    border:3px solid #2c2c7c;
+    border-radius:18px;
+    padding:10px;
+    background:#ffffff;
+    transition:.3s;
+    cursor:pointer;
+}
+
+.botones img:hover{
+    transform:scale(1.1);
+}
+
+/* texto pequeño */
+.nota{
+    position:absolute;
+    top:820px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:20px;
+}
+
+/* carro abajo */
+.carro{
+    position:absolute;
+    top:760px;   /* debajo del texto */
+    left:50%;
+    transform:translateX(-50%);
+    width:520px;
+}
+#inicio{
+    position:fixed;
+    width:100%;
+    height:100vh;
+    top:0;
+    left:0;
+    transition:opacity .6s ease, transform .6s ease;
+    
+}
+
+.ocultarInicio{
+    opacity:0;
+    transform:scale(1.05);
+    pointer-events:none;
+}
+.mail{
+    position:absolute;
+    top:160px;
+    left:50%;
+    transform:translateX(-50%);
+    width:45px;
+}
+.pantallaFotos{
+    position: fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100vh;
+
+    /* FONDO DE RAYOS */
+    background:
+    repeating-conic-gradient(
+        from 0deg,
+        #d2e7f7 0deg 10deg,
+        #ffffff 10deg 20deg
+    );
+    
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    opacity:0;
+    pointer-events:none;
+    transform:scale(1.2);
+    transition: all 1s ease;
+}
+
+.pantallaFotos.activa{
+    opacity:1;
+    pointer-events:auto;
+    transform:scale(1);
+}
+.collage{
+    position:absolute;
+    top:80px;
+    width:600px;
+    height:260px;
+}
+
+.foto{
+    width:100%;
+    border-radius:12px;
+    box-shadow:0 15px 30px rgba(0,0,0,.35);
+}
+
+/* posiciones */
+.f1{ left:-200px; transform:rotate(-8deg);}
+.f2{ left:0; transform:rotate(5deg);}
+.f3{ left:200px; transform:rotate(-5deg);}
+
+/* animación entrada */
+.fotoBox{
+    opacity:0;
+    transform:translateY(-300px) scale(.7);
+}
+
+.pantallaFotos.activa .f1{
+    opacity:1;
+    transform:translateY(0) rotate(-12deg);
+    transition:1s ease .2s;
+}
+
+.pantallaFotos.activa .f2{
+    opacity:1;
+    transform:translateY(0) rotate(6deg);
+    transition:1s ease .5s;
+}
+
+.pantallaFotos.activa .f3{
+    opacity:1;
+    transform:translateY(0) rotate(-6deg);
+    transition:1s ease .8s;
+}
+.postal{
+    width:420px;
+    background:linear-gradient(#3aa0ff,#2a7dd1);
+    padding:40px;
+    border-radius:25px;
+    border:10px dashed white;
+    text-align:center;
+    color:#ffe84a;
+    font-size:20px;
+    font-weight:bold;
+    box-shadow:0 10px 30px rgba(0,0,0,0.2);
+    margin-top:180px;
+    opacity:0;
+    transform:translateY(100px);
+}
+
+.pantallaFotos.activa .postal{
+    opacity:1;
+    transform:translateY(0);
+    transition:1.2s ease 0.5s;
+}
+
+.logoHW{
+    width:120px;
+    margin-top:15px;
+}
+.volver{
+    margin-top:30px;
+    padding:12px 30px;
+    border:none;
+    border-radius:20px;
+    background:#2a7dd1;
+    color:white;
+    font-size:18px;
+    cursor:pointer;
+    opacity:0;
+}
+
+.pantallaFotos.activa .volver{
+    opacity:1;
+    transition:1s ease 1s;
+}
+.pantallaTrofeo.activa .volver{
+    opacity:1;
+    transition:1s ease 1s;
+}
+.collage{
+    position:relative;   /* ← ESTA ES LA CLAVE */
+    width:600px;
+    height:320px;
+    margin-top:-120px;
+}
+
+/* contenedor de cada foto */
+.fotoBox{
+    position:absolute;
+    width:200px;
+    transition:1s ease;
+}
+/* FOTO IZQUIERDA */
+.f1{
+    left:40px;
+    top:40px;
+    transform:rotate(-12deg);
+    z-index:1;
+}
+
+/* FOTO CENTRO (ENCIMA DE TODAS) */
+.f2{
+    left:200px;
+    top:0px;
+    transform:rotate(6deg);
+    z-index:3;
+}
+
+/* FOTO DERECHA */
+.f3{
+    left:360px;
+    top:50px;
+    transform:rotate(-6deg);
+    z-index:2;
+}
+
+/* rotaciones distintas */
+.f1{ transform:rotate(-10deg);}
+.f2{ transform:rotate(6deg);}
+.f3{ transform:rotate(-4deg);}
+
+.foto{
+    width:100%;
+    border-radius:12px;
+    box-shadow:0 15px 30px rgba(0,0,0,.35);
+}
+.sticker{
+    position:absolute;
+    width:55px;
+    pointer-events:none;
+}
+
+/* posiciones personalizadas */
+.s1{ top:-25px; left:-20px; width:60px;}
+.s2{ top:70px; right:-25px; width:55px;}
+.s3{ top:-25px; right:-20px; width:60px;}
+.s4{ bottom:-20px; left:-20px; width:50px;}
+.s5{ top:70px; left:-25px; width:55px;}
+.s6{ bottom:-25px; right:-20px; width:65px;}
+.postal{
+    width:420px;
+    background:linear-gradient(#3aa0ff,#2a7dd1);
+    padding:45px;
+    border-radius:25px;
+    border:12px dashed white;
+    text-align:center;
+    color:#ffe84a;
+    font-size:22px;
+    font-weight:bold;
+    box-shadow:0 15px 35px rgba(0,0,0,0.25);
+    margin-top:320px;
+
+    opacity:0;
+    transform:translateY(100px);
+}
+
+.pantallaFotos.activa .postal{
+    opacity:1;
+    transform:translateY(0);
+    transition:1.2s ease 1s;
+}
+
+.hwSticker{
+    position:absolute;
+    bottom:-25px;
+    right:-20px;
+    width:130px;
+    transform:rotate(-10deg);
+}
+/* HACER APARECER LAS FOTOS */
+.pantallaFotos.activa .fotoBox{
+    opacity:1;
+    transform:translateY(0) scale(1);
+}
+.fotoBox{
+    opacity:0;
+    transform:translateY(-300px) scale(.7);
+}
+
+/* aparición escalonada */
+.pantallaFotos.activa .f1{
+    opacity:1;
+    transform:translateY(0) scale(1) rotate(-10deg);
+    transition:1s ease .3s;
+}
+
+.pantallaFotos.activa .f2{
+    opacity:1;
+    transform:translateY(0) scale(1) rotate(6deg);
+    transition:1s ease .8s;
+}
+
+.pantallaFotos.activa .f3{
+    opacity:1;
+    transform:translateY(0) scale(1) rotate(-4deg);
+    transition:1s ease 1.3s;
+}
+.pantallaFotos{
+    overflow:visible;
+}
+/* PANTALLA TROFEO */
+
+.pantallaTrofeo{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100vh;
+
+    /* MISMO FONDO DE RAYOS */
+    background:
+    repeating-conic-gradient(
+        from 0deg,
+        #d2e7f7 0deg 10deg,
+        #ffffff 10deg 20deg
+    );
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+
+    opacity:0;
+    pointer-events:none;
+    transform:scale(1.2);
+    transition:all 1s ease;
+}
+
+.pantallaTrofeo.activa{
+    opacity:1;
+    pointer-events:auto;
+    transform:scale(1);
+}
+
+/* trofeo arriba */
+.trofeo{
+    width:320px;        /* ⬅️ tamaño más grande */
+    margin-top:-170px;  /* compensamos para que siga pegado arriba */
+    margin-bottom:-60px;
+}
+/* tarjeta azul */
+.tarjetaTrofeo{
+    width:420px;
+    margin-top:-20px;
+    background:linear-gradient(#3aa0ff,#2a7dd1);
+    padding:45px;
+    border-radius:25px;
+    border:12px dotted white;
+    text-align:center;
+    color:#ffe84a;
+    font-size:22px;
+    font-weight:bold;
+    box-shadow:0 15px 35px rgba(0,0,0,0.25);
+    position:relative;
+}
+
+/* logo hotwheels esquina */
+.logoTrofeo{
+    position:absolute;
+    bottom:-25px;
+    right:-20px;
+    width:130px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- PANTALLA INICIAL -->
+<section id="inicio">
+
+<div class="top-pattern"></div>
+<img class="logo" src="Captura de pantalla 2026-04-06 051439.png">
+<div class="left"><p>Para:<br>Mi hermano</p></div>
+<div class="right"><p>con cariño de<br>mendoza 🩵</p></div>
+<img class="mail" src="1.gif">
+<img id="bear" class="bear" src="bear1.gif">
+
+<div id="window" class="window">
+    <div id="msg" class="msg"></div>
+    <div id="btns" class="btns"></div>
+</div>
+
+</section>
+<!-- PANTALLA SORPRESA -->
+<section id="sorpresa" class="pantalla oculto">
+
+    <img src="Captura de pantalla 2026-04-06 051439.png" class="logo2">
+
+    <div class="left"><p>Para:<br>Mi hermano</p></div>
+<div class="right"><p>con cariño de<br>mendoza 🩵</p></div>
+<img class="mail" src="1.gif">
+    <img src="5.gif" class="osito">
+
+    <div class="carta">
+        <h2>¡Feliz Día del Hermano, mi amor!</h2>
+        <p>
+            Eres mi alegría, mi motor y mi razón de sonreír.
+            Gracias por ser parte de mi vida.
+            ¡Te amo infinito!
+        </p>
+    </div>
+
+    <div class="botones">
+        <img src="Captura de pantalla 2026-04-07 044534.png">
+        <img src="2.png" id="btnTrofeo">
+        <img src="9.png">
+        <img src="0.png" id="btnCamara" class="cameraIcon">
+    </div>
+
+    <p class="nota">(presiona los iconos, son cartas sorpresas)</p>
+
+    <img src="carro.png" class="carro">
+
+</section>
+<section id="pantallaFotos" class="pantallaFotos">
+    
+    <div class="collage">
+
+    <div class="fotoBox f1">
+        <img src="foto1.jpg" class="foto">
+        <img src="50.png" class="sticker s1">
+    </div>
+
+    <div class="fotoBox f2">
+        <img src="foto2.jpg" class="foto">
+        <img src="100.png" class="sticker s3">
+        <img src="beso.png" class="sticker s4">
+    </div>
+
+    <div class="fotoBox f3">
+        <img src="foto3.jpg" class="foto">
+        <img src="stickers/80.png" class="sticker s5">
+        <img src="flama.png" class="sticker s6">
+    </div>
+
+</div>
+
+    <div class="postal">
+    <p>
+    Desde que llegaste a mi vida encendiste mi motor.
+    Cada día contigo es como acelerar hacia un destino lleno de amor y aventuras.
+    </p>
+
+    <img src="hott.png" class="hwSticker">
+</div>
+
+    <button id="volverBtn" class="volver">VOLVER</button>
+
+</section>
+<section id="pantallaTrofeo" class="pantallaTrofeo">
+
+    <img src="trofeo.png" class="trofeo">
+
+    <div class="tarjetaTrofeo">
+        <p>
+        Desde que llegaste a mi vida encendiste mi motor.
+        Cada día contigo es como acelerar hacia
+        un destino lleno de amor y aventuras.
+        </p>
+
+        <img src="hott.png" class="logoTrofeo">
+    </div>
+
+    <button id="volverTrofeo" class="volver">VOLVER</button>
+
+</section>
+<script>
+let paso=1;
+
+function render(){
+    let msg=document.getElementById("msg");
+    let btns=document.getElementById("btns");
+    let bear=document.getElementById("bear");
+
+    document.getElementById("window").classList.add("flash");
+
+    setTimeout(()=>{
+
+        if(paso==1){
+            bear.src="bear1.gif";
+            bear.style.transform="translateX(-50%) scale(1)";
+            msg.innerText="Tengo una sorpresa 😎\n¿Quieres verla?";
+            btns.innerHTML=`
+            <button onclick="abrirSorpresa()">Claro que sí 💙</button>
+            <button onclick="next()">No, gracias 😅</button>`;
+        }
+
+        if(paso==2){
+            bear.src="bear2.gif";
+            bear.style.transform="translateX(-50%) scale(1.3)";
+            msg.innerText="Por favor 😭 Hice esto solo\npara ti, y me harías la persona\nmás feliz si lo ves.";
+            btns.innerHTML=`
+            <button onclick="abrirSorpresa()">Está bien, la veré ❤️</button>
+            <button onclick="next()">Sigo sin querer 😐</button>`;
+        }
+
+        if(paso==3){
+            bear.src="bear3.gif";
+            bear.style.transform="translateX(-50%) scale(1.6)";
+            msg.innerText="¡Ya basta! No te daré más\noportunidades. Tendrás que\nintentarlo otra vez desde el inicio.";
+            btns.innerHTML=`
+            <button onclick="location.reload()">Ok, lo intentaré otra vez 😇</button>`;
+        }
+
+        document.getElementById("window").classList.remove("flash");
+    },300);
+}
+
+function next(){
+    paso++;
+    render();
+}
+
+render();
+function abrirSorpresa(){
+    const inicio = document.getElementById("inicio");
+    const sorpresa = document.getElementById("sorpresa");
+
+    // animación de cierre de la primera pantalla
+    inicio.classList.add("ocultarInicio");
+
+    // después aparece la sorpresa
+    setTimeout(()=>{
+        sorpresa.classList.remove("oculto");
+        sorpresa.classList.add("mostrar");
+    },600);
+}
+</script>
+<script>
+
+const btnCamara = document.getElementById("btnCamara");
+const pantallaFotos = document.getElementById("pantallaFotos");
+const volverBtn = document.getElementById("volverBtn");
+const sorpresa = document.getElementById("sorpresa"); // ← ESTE ES EL BUENO
+
+// abrir pantalla fotos 📸
+btnCamara.onclick = () => {
+
+    // animación salida pantalla sorpresa
+    sorpresa.style.transition = "0.8s";
+    sorpresa.style.opacity = "0";
+    sorpresa.style.transform = "scale(0.9)";
+
+    setTimeout(()=>{
+        sorpresa.style.display="none";
+        pantallaFotos.classList.add("activa");
+    },800);
+}
+
+// volver atrás 🔙
+volverBtn.onclick = () => {
+
+    pantallaFotos.classList.remove("activa");
+
+    setTimeout(()=>{
+        sorpresa.style.display="flex";
+        sorpresa.style.opacity="1";
+        sorpresa.style.transform="scale(1)";
+    },800);
+}
+
+</script>
+<script>
+const pantallaTrofeo = document.getElementById("pantallaTrofeo");
+const volverTrofeo = document.getElementById("volverTrofeo");
+const btnLlave = document.getElementById("btnLlave"); // icono corazón con llave
+
+// abrir trofeo ❤️🔑
+btnTrofeo.onclick = () => {
+    sorpresa.style.transition="0.8s";
+    sorpresa.style.opacity="0";
+    sorpresa.style.transform="scale(0.9)";
+
+    setTimeout(()=>{
+        sorpresa.style.display="none";
+        pantallaTrofeo.classList.add("activa");
+    },800);
+}
+
+// volver atrás
+volverTrofeo.onclick = () => {
+    pantallaTrofeo.classList.remove("activa");
+
+    setTimeout(()=>{
+        sorpresa.style.display="flex";
+        sorpresa.style.opacity="1";
+        sorpresa.style.transform="scale(1)";
+    },800);
+}
+</script>
+</body>
+</html>
