@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feliz Día de las Madres 💕</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --rose:#e8a0b4;
+  --rose-deep:#c06080;
+  --rose-pale:#fce8ef;
+  --gold:#c9973a;
+  --gold-light:#f5d98e;
+  --cream:#fffaf5;
+  --blush:#fdf0f5;
+  --text-dark:#3d1828;
+  --text-mid:#8b4560;
+  --white:#ffffff;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Montserrat',sans-serif;background:var(--cream);color:var(--text-dark);overflow-x:hidden}
+
+/* ── HERO ── */
+#hero{position:relative;height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;background:linear-gradient(145deg,#fff2f7 0%,#fce8f2 35%,#fdf0e8 70%,#fff5f0 100%)}
+#pc{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1}
+.hero-content{position:relative;z-index:10;text-align:center;animation:heroIn 1.8s cubic-bezier(.22,1,.36,1) forwards;opacity:0}
+@keyframes heroIn{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+.bow-wrap{width:130px;margin:0 auto 1.8rem;animation:bowFloat 4s ease-in-out infinite}
+@keyframes bowFloat{0%,100%{transform:translateY(0) rotate(-1.5deg)}50%{transform:translateY(-12px) rotate(1.5deg)}}
+.date-badge{display:inline-block;font-size:.68rem;font-weight:400;letter-spacing:.45em;color:var(--gold);text-transform:uppercase;margin-bottom:1.2rem;opacity:.9}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(3.2rem,8.5vw,7.5rem);font-weight:300;line-height:1.05;color:var(--text-dark)}
+.hero-title em{font-style:italic;color:var(--rose-deep)}
+.hero-div{width:90px;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);margin:1.6rem auto}
+.hero-sub{font-family:'Cormorant Garamond',serif;font-size:clamp(1.1rem,2.8vw,1.8rem);font-weight:300;font-style:italic;color:var(--text-mid)}
+.scroll-cue{position:absolute;bottom:2.2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.4rem;animation:cue 2.2s ease-in-out infinite;opacity:.55}
+@keyframes cue{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(9px)}}
+.scroll-cue span{font-size:.62rem;letter-spacing:.4em;color:var(--text-mid);font-family:'Montserrat',sans-serif}
+.scroll-cue svg{width:18px;height:18px;stroke:var(--rose-deep);fill:none}
+
+/* ── PETALS ── */
+.petal{position:fixed;pointer-events:none;border-radius:60% 40% 70% 30%;opacity:0;animation:petalFall linear infinite;z-index:0}
+@keyframes petalFall{0%{transform:translateY(-30px) rotate(0deg) translateX(0);opacity:0}
+8%{opacity:.65}90%{opacity:.4}100%{transform:translateY(102vh) rotate(480deg) translateX(40px);opacity:0}}
+
+/* ── UTILITY ── */
+.fade-up{opacity:0;transform:translateY(44px);transition:all 1s cubic-bezier(.22,1,.36,1)}
+.fade-up.visible{opacity:1;transform:none}
+.sec-label{font-family:'Montserrat',sans-serif;font-size:.68rem;letter-spacing:.5em;color:var(--gold);text-transform:uppercase;text-align:center;margin-bottom:.9rem;opacity:0;transform:translateY(18px);transition:all .9s ease}
+.sec-label.visible{opacity:1;transform:none}
+.sec-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5vw,3.6rem);font-weight:300;text-align:center;color:var(--text-dark);margin-bottom:.4rem}
+.sec-title em{font-style:italic;color:var(--rose-deep)}
+
+/* ── QUOTE STRIP ── */
+.quote-strip{min-height:58vh;display:flex;align-items:center;justify-content:center;padding:4rem 2rem;text-align:center;position:relative;overflow:hidden}
+.q1{background:linear-gradient(135deg,#fff2f7 0%,#fce8ef 100%)}
+.q2{background:linear-gradient(135deg,#fff8f0 0%,#fdf0e8 100%)}
+.quote-text{font-family:'Cormorant Garamond',serif;font-size:clamp(1.5rem,3.8vw,2.8rem);font-weight:300;font-style:italic;color:var(--text-dark);max-width:780px;line-height:1.65}
+.quote-attr{font-family:'Montserrat',sans-serif;font-size:.72rem;letter-spacing:.28em;color:var(--gold);margin-top:1.4rem}
+
+/* ── LETTER ── */
+#letter-section{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:5rem 2rem;background:linear-gradient(180deg,var(--cream) 0%,var(--blush) 100%)}
+.letter-wrap{max-width:700px;width:100%;opacity:0;transform:translateY(50px) scale(.97);transition:all 1.3s cubic-bezier(.22,1,.36,1);transition-delay:.1s}
+.letter-wrap.visible{opacity:1;transform:none}
+.letter-card{background:rgba(255,255,255,.88);backdrop-filter:blur(24px) saturate(1.4);border:1px solid rgba(232,160,180,.28);border-radius:28px;padding:clamp(2rem,5vw,4rem);position:relative;
+  box-shadow:0 2px 4px rgba(192,96,128,.04),0 12px 50px rgba(192,96,128,.13),0 0 0 1px rgba(255,255,255,.85) inset}
+.letter-card::before{content:'';position:absolute;inset:0;border-radius:28px;background:linear-gradient(145deg,rgba(255,255,255,.55) 0%,transparent 55%);pointer-events:none}
+.lc{position:absolute;width:64px;height:64px;opacity:.45}
+.lc.tl{top:14px;left:14px}.lc.tr{top:14px;right:14px;transform:scaleX(-1)}.lc.bl{bottom:14px;left:14px;transform:scaleY(-1)}.lc.br{bottom:14px;right:14px;transform:scale(-1)}
+.letter-hdr{text-align:center;margin-bottom:2.8rem}
+.l-dear{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-style:italic;color:var(--text-mid);margin-bottom:.4rem}
+.l-mama{font-family:'Cormorant Garamond',serif;font-size:clamp(3rem,8vw,4.5rem);font-weight:600;color:var(--rose-deep);line-height:1}
+.letter-body{font-family:'Cormorant Garamond',serif;font-size:clamp(1.15rem,2.2vw,1.35rem);line-height:2;color:var(--text-dark);font-weight:300}
+.letter-body p{margin-bottom:1.5rem}
+.l-div{display:flex;align-items:center;gap:1rem;margin:1.8rem 0;color:var(--rose)}
+.l-div::before,.l-div::after{content:'';flex:1;height:1px;background:linear-gradient(to right,transparent,var(--rose),transparent)}
+.letter-sign{text-align:right;margin-top:2.5rem}
+.l-love{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-style:italic;color:var(--text-mid)}
+.l-name{font-family:'Cormorant Garamond',serif;font-size:2.8rem;color:var(--rose-deep);line-height:1.1}
+
+/* ── GALLERY ── */
+#gallery{min-height:100vh;padding:5rem 2rem;background:#fef5f8;position:relative;overflow:hidden}
+.gallery-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 20% 80%,rgba(248,187,208,.25) 0%,transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(245,217,142,.15) 0%,transparent 60%);pointer-events:none}
+.polaroid-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:1.8rem;max-width:1150px;margin:3rem auto 0}
+.polaroid{background:#fff;padding:1rem 1rem 3.2rem;box-shadow:0 4px 18px rgba(180,100,130,.14),0 1px 3px rgba(0,0,0,.08);width:200px;transform:rotate(var(--r));transition:transform .45s cubic-bezier(.22,1,.36,1),box-shadow .45s ease;cursor:pointer;opacity:0;position:relative}
+.polaroid.visible{opacity:1}
+.polaroid:hover{transform:scale(1.07) rotate(0deg) translateY(-10px) !important;box-shadow:0 22px 60px rgba(180,100,130,.32),0 4px 12px rgba(0,0,0,.1);z-index:20}
+.pol-img{width:100%;aspect-ratio:1;overflow:hidden;border-radius:1px}
+.pol-caption{text-align:center;margin-top:.9rem;font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-style:italic;color:var(--text-mid)}
+.pol-tape{position:absolute;top:-12px;left:50%;transform:translateX(-50%);width:40px;height:16px;background:rgba(245,217,142,.7);border-radius:2px}
+
+/* ── THANKS ── */
+#thanks{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:5rem 2rem;text-align:center;position:relative;overflow:hidden;background:linear-gradient(145deg,#fce8f2 0%,#f8d4e4 50%,#fce8f2 100%)}
+.fheart{position:absolute;font-size:1.6rem;animation:hFloat ease-in-out infinite;pointer-events:none;opacity:.25;color:var(--rose-deep)}
+@keyframes hFloat{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-35px) scale(1.18)}}
+.thanks-label{font-family:'Montserrat',sans-serif;font-size:.7rem;letter-spacing:.5em;color:var(--gold);text-transform:uppercase;margin-bottom:1.5rem}
+.thanks-h{font-family:'Cormorant Garamond',serif;font-size:clamp(3.5rem,12vw,9rem);font-weight:300;color:var(--text-dark);line-height:1}
+.thanks-h em{font-style:italic;color:var(--rose-deep)}
+.thanks-msg{font-family:'Cormorant Garamond',serif;font-size:clamp(1.1rem,2.5vw,1.55rem);font-weight:300;font-style:italic;color:var(--text-mid);max-width:580px;line-height:1.85;margin-top:2.2rem}
+.small-bow{margin-top:3rem;opacity:.65}
+
+/* ── MUSIC PLAYER ── */
+#mp{position:fixed;bottom:1.8rem;right:1.8rem;z-index:1000;display:flex;align-items:center;gap:.75rem;background:rgba(255,255,255,.88);backdrop-filter:blur(20px);border:1px solid rgba(232,160,180,.35);border-radius:50px;padding:.55rem 1.2rem .55rem .55rem;box-shadow:0 8px 32px rgba(192,96,128,.22);transition:box-shadow .3s ease}
+#mp:hover{box-shadow:0 14px 44px rgba(192,96,128,.32)}
+.play-btn{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--rose),var(--rose-deep));border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .2s ease}
+.play-btn:hover{transform:scale(1.06)}.play-btn:active{transform:scale(.95)}
+.play-btn svg{width:15px;height:15px;fill:#fff}
+.viz{display:flex;gap:2px;align-items:center;height:18px}
+.vbar{width:3px;background:var(--rose);border-radius:3px;transition:height .12s ease;height:4px}
+.p-title{font-family:'Cormorant Garamond',serif;font-size:1rem;font-style:italic;color:var(--text-dark);line-height:1.2}
+.p-sub{font-size:.6rem;letter-spacing:.12em;color:var(--text-mid);font-family:'Montserrat',sans-serif;margin-top:1px}
+
+/* ── FOOTER ── */
+footer{background:var(--text-dark);padding:3rem 2rem;text-align:center}
+.f-logo{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-style:italic;color:var(--gold-light);margin-bottom:.8rem}
+.f-line{width:55px;height:1px;background:rgba(255,255,255,.25);margin:.9rem auto}
+.f-copy{font-size:.7rem;letter-spacing:.3em;color:rgba(255,255,255,.35);font-family:'Montserrat',sans-serif}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){.polaroid{width:155px}.letter-card{padding:2rem}#mp{bottom:1rem;right:1rem}}
+@media(max-width:480px){.polaroid{width:135px}.l-mama{font-size:3rem}.polaroid-grid{gap:1rem}}
+</style>
+</head>
+<body>
+
+<!-- PETALS CONTAINER -->
+<div id="petals"></div>
+
+<!-- ══════════════════ HERO ══════════════════ -->
+<section id="hero">
+<canvas id="pc"></canvas>
+<div class="hero-content">
+
+  <!-- Minnie-inspired elegant bow -->
+  <div class="bow-wrap">
+    <svg viewBox="0 0 140 92" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="bwL" cx="40%" cy="40%"><stop offset="0%" stop-color="#fce4ec"/><stop offset="100%" stop-color="#f48fb1"/></radialGradient>
+        <radialGradient id="bwR" cx="60%" cy="40%"><stop offset="0%" stop-color="#fce4ec"/><stop offset="100%" stop-color="#f48fb1"/></radialGradient>
+        <radialGradient id="bwC" cx="50%" cy="50%"><stop offset="0%" stop-color="#e8a0b4"/><stop offset="100%" stop-color="#c27090"/></radialGradient>
+      </defs>
+      <!-- Left wing outer -->
+      <ellipse cx="42" cy="44" rx="40" ry="24" fill="url(#bwL)" stroke="#e8a0b4" stroke-width=".8" transform="rotate(-16 42 44)"/>
+      <!-- Left wing inner shimmer -->
+      <ellipse cx="42" cy="44" rx="30" ry="15" fill="rgba(255,255,255,.35)" transform="rotate(-16 42 44)"/>
+      <!-- Right wing outer -->
+      <ellipse cx="98" cy="44" rx="40" ry="24" fill="url(#bwR)" stroke="#e8a0b4" stroke-width=".8" transform="rotate(16 98 44)"/>
+      <!-- Right wing inner shimmer -->
+      <ellipse cx="98" cy="44" rx="30" ry="15" fill="rgba(255,255,255,.35)" transform="rotate(16 98 44)"/>
+      <!-- Center knot -->
+      <ellipse cx="70" cy="44" rx="11" ry="15" fill="url(#bwC)" stroke="#c9973a" stroke-width=".6"/>
+      <ellipse cx="70" cy="44" rx="6.5" ry="10" fill="#f48fb1" opacity=".7"/>
+      <!-- Gold dots -->
+      <circle cx="28" cy="39" r="1.8" fill="#c9973a" opacity=".55"/><circle cx="55" cy="50" r="1.2" fill="#c9973a" opacity=".4"/>
+      <circle cx="112" cy="39" r="1.8" fill="#c9973a" opacity=".55"/><circle cx="85" cy="50" r="1.2" fill="#c9973a" opacity=".4"/>
+      <circle cx="38" cy="30" r="1" fill="#c9973a" opacity=".3"/><circle cx="102" cy="30" r="1" fill="#c9973a" opacity=".3"/>
+      <!-- Ribbon tails -->
+      <path d="M63 57 Q52 74 40 80" stroke="#e8a0b4" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+      <path d="M77 57 Q88 74 100 80" stroke="#e8a0b4" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+      <!-- Small hearts on wings -->
+      <text x="22" y="48" font-size="10" fill="#c27090" opacity=".4" font-family="serif">♡</text>
+      <text x="104" y="48" font-size="10" fill="#c27090" opacity=".4" font-family="serif">♡</text>
+    </svg>
+  </div>
+
+  <p class="date-badge">30 de Mayo · Día de las Madres</p>
+  <h1 class="hero-title">Feliz Día<br>Mami<em></em></h1>
+  <div class="hero-div"></div>
+  <p class="hero-sub">Para la persona más importante de mi vida</p>
+</div>
+
+<div class="scroll-cue">
+  <span>Desliza</span>
+  <svg viewBox="0 0 20 20"><path d="M4 7l6 6 6-6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</div>
+</section>
+
+<!-- ══════════════════ QUOTE 1 ══════════════════ -->
+<div class="quote-strip q1">
+  <div>
+    <p class="quote-text fade-up">"no eres la unica mamá,<br>pero si la mejor."</p>
+    <p class="quote-attr fade-up">att: la persona que mas te ama</p>
+  </div>
+</div>
+
+<!-- ══════════════════ LETTER ══════════════════ -->
+<section id="letter-section">
+  <p class="sec-label">✦ Una carta para ti ✦</p>
+  <div class="letter-wrap">
+    <div class="letter-card">
+      <!-- Corner flourishes -->
+      <svg class="lc tl" viewBox="0 0 64 64"><path d="M2 32 Q2 2 32 2 Q2 18 2 32Z" fill="#f8bbd0" opacity=".6"/><circle cx="12" cy="12" r="2.5" fill="#c9973a" opacity=".45"/><circle cx="22" cy="7" r="1.5" fill="#c9973a" opacity=".3"/><path d="M6 28 Q18 12 26 6" stroke="#e8a0b4" stroke-width=".9" fill="none"/></svg>
+      <svg class="lc tr" viewBox="0 0 64 64"><path d="M2 32 Q2 2 32 2 Q2 18 2 32Z" fill="#f8bbd0" opacity=".6"/><circle cx="12" cy="12" r="2.5" fill="#c9973a" opacity=".45"/></svg>
+      <svg class="lc bl" viewBox="0 0 64 64"><path d="M2 32 Q2 2 32 2 Q2 18 2 32Z" fill="#f8bbd0" opacity=".6"/><circle cx="12" cy="12" r="2.5" fill="#c9973a" opacity=".45"/></svg>
+      <svg class="lc br" viewBox="0 0 64 64"><path d="M2 32 Q2 2 32 2 Q2 18 2 32Z" fill="#f8bbd0" opacity=".6"/><circle cx="12" cy="12" r="2.5" fill="#c9973a" opacity=".45"/></svg>
+
+      <div class="letter-hdr">
+        <p class="l-dear">Para ti, con todo mi corazón,</p>
+        <p class="l-mama">Mamá</p>
+      </div>
+
+      <div class="letter-body">
+        <p id="lt1"></p>
+        <div class="l-div">
+          <svg width="18" height="18" viewBox="0 0 18 18"><path d="M9 16S2 11.5 2 6.2A4 4 0 019 2.5a4 4 0 017 3.7C16 11.5 9 16 9 16z" fill="#f48fb1"/></svg>
+        </div>
+        <p id="lt2"></p>
+        <p id="lt3"></p>
+        <div class="l-div">
+          <svg width="18" height="18" viewBox="0 0 18 18"><path d="M9 16S2 11.5 2 6.2A4 4 0 019 2.5a4 4 0 017 3.7C16 11.5 9 16 9 16z" fill="#f48fb1"/></svg>
+        </div>
+        <p id="lt4"></p>
+      </div>
+
+      <div class="letter-sign">
+        <p class="l-love">Con todo mi amor,</p>
+        <p class="l-name">Tu Hija favorita ♡</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ GALLERY ══════════════════ -->
+<section id="gallery">
+<div class="gallery-bg"></div>
+<p class="sec-label">✦ Álbum de fotos ✦</p>
+<h2 class="sec-title fade-up">para que recuerdes <em>siempre</em></h2>
+<p style="text-align:center;font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--text-mid);font-size:1.1rem;margin-top:.5rem;opacity:.8" class="fade-up">lo hermosa que estas</p>
+<div class="polaroid-grid" id="pgrid"></div>
+</section>
+
+<!-- ══════════════════ QUOTE 2 ══════════════════ -->
+<div class="quote-strip q2">
+  <div>
+    <p class="quote-text fade-up">"Mamá, gracias por ser mi lugar seguro incluso cuando todo se siente difícil. No importa la distancia ni el tiempo, siempre vas a ser la persona más importante de mi vida. 💕"</p>
+    <p class="quote-attr fade-up">att: la persona que mas te ama</p>
+  </div>
+</div>
+
+<!-- ══════════════════ THANKS ══════════════════ -->
+<section id="thanks">
+  <span class="fheart" style="left:8%;top:18%;animation-duration:5s">♡</span>
+  <span class="fheart" style="left:88%;top:14%;animation-duration:7s;animation-delay:1.5s;font-size:2rem">♡</span>
+  <span class="fheart" style="left:15%;top:72%;animation-duration:6s;animation-delay:2s;font-size:1rem">♡</span>
+  <span class="fheart" style="left:82%;top:68%;animation-duration:8s;animation-delay:.8s;font-size:2.4rem">♡</span>
+  <span class="fheart" style="left:48%;top:8%;animation-duration:5.5s;animation-delay:3s;font-size:.8rem">♡</span>
+  <span class="fheart" style="left:30%;top:30%;animation-duration:9s;animation-delay:1s;font-size:1.2rem">♡</span>
+
+  <p class="thanks-label fade-up">Siempre y para siempre</p>
+  <h2 class="thanks-h fade-up">Gracias<br><em>Mamá</em></h2>
+  <p class="thanks-msg fade-up">Que este día sea tan especial como el amor que me das cada día de mi vida. Te amo más de lo que cualquier palabra puede expresar.</p>
+
+  <div class="small-bow fade-up">
+    <svg viewBox="0 0 90 60" width="90" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="28" cy="29" rx="26" ry="16" fill="#c27090" stroke="#a05070" stroke-width=".7" transform="rotate(-17 28 29)"/>
+      <ellipse cx="62" cy="29" rx="26" ry="16" fill="#c27090" stroke="#a05070" stroke-width=".7" transform="rotate(17 62 29)"/>
+      <ellipse cx="45" cy="29" rx="8" ry="11" fill="#3d1828"/>
+      <ellipse cx="45" cy="29" rx="5" ry="7" fill="#c27090"/>
+      <circle cx="35" cy="24" r="1.5" fill="#c9973a" opacity=".5"/>
+      <circle cx="55" cy="24" r="1.5" fill="#c9973a" opacity=".5"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ══════════════════ FOOTER ══════════════════ -->
+<footer>
+  <p class="f-logo">Para Mamá</p>
+  <div class="f-line"></div>
+  <p class="f-copy">Con todo el amor del mundo · 30 de Mayo</p>
+</footer>
+
+<audio id="audio-el" src="hola.mp3" loop></audio>
+
+<div id="mp">
+  <button class="play-btn" id="pbtn" title="Reproducir / Pausar">
+    <svg id="pico" viewBox="0 0 20 20"><polygon points="6,3 17,10 6,17"/></svg>
+    <svg id="paico" viewBox="0 0 20 20" style="display:none"><rect x="4" y="3" width="4" height="14" rx="1.5"/><rect x="12" y="3" width="4" height="14" rx="1.5"/></svg>
+  </button>
+  <div class="viz" id="viz">
+    <div class="vbar" style="height:4px"></div><div class="vbar" style="height:8px"></div>
+    <div class="vbar" style="height:6px"></div><div class="vbar" style="height:12px"></div>
+    <div class="vbar" style="height:5px"></div><div class="vbar" style="height:9px"></div>
+    <div class="vbar" style="height:4px"></div>
+  </div>
+  <div><p class="p-title"></p><p class="p-sub">Para Mamá con amor</p></div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════
+// CANVAS PARTICLES
+// ══════════════════════════════════════════════
+const cv=document.getElementById('pc'),cx=cv.getContext('2d');
+function rsz(){cv.width=window.innerWidth;cv.height=window.innerHeight}
+rsz();window.addEventListener('resize',rsz);
+const cols=['#f8bbd0','#f48fb1','#d4a843','#fce4ec','#c27090','#f9dfe8','#e8a0b4'];
+const pts=[];
+class Pt{
+  constructor(){this.init();this.y=Math.random()*cv.height}
+  init(){
+    this.x=Math.random()*cv.width;this.y=-10;
+    this.r=Math.random()*2.5+.8;
+    this.vy=Math.random()*.45+.15;this.vx=(Math.random()-.5)*.3;
+    this.a=Math.random()*.55+.15;
+    this.c=cols[Math.floor(Math.random()*cols.length)];
+    this.spark=Math.random()>.55;
+  }
+  tick(){
+    this.y+=this.vy;this.x+=this.vx;
+    if(this.y>cv.height+10)this.init();
+  }
+  draw(){
+    cx.save();cx.globalAlpha=this.a;cx.fillStyle=this.c;
+    if(this.spark){
+      cx.translate(this.x,this.y);
+      cx.beginPath();
+      cx.moveTo(0,-this.r*2.5);cx.lineTo(this.r*.5,0);
+      cx.lineTo(0,this.r*2.5);cx.lineTo(-this.r*.5,0);
+      cx.closePath();cx.fill();
+      cx.beginPath();
+      cx.moveTo(-this.r*2.5,0);cx.lineTo(0,-this.r*.5);
+      cx.lineTo(this.r*2.5,0);cx.lineTo(0,this.r*.5);
+      cx.closePath();cx.fill();
+    }else{
+      cx.beginPath();cx.arc(this.x,this.y,this.r,0,Math.PI*2);cx.fill();
+    }
+    cx.restore();
+  }
+}
+for(let i=0;i<90;i++)pts.push(new Pt());
+(function loop(){cx.clearRect(0,0,cv.width,cv.height);pts.forEach(p=>{p.tick();p.draw()});requestAnimationFrame(loop)})();
+
+// ══════════════════════════════════════════════
+// FALLING PETALS
+// ══════════════════════════════════════════════
+const pc=document.getElementById('petals');
+const pcolors=['#f8bbd0','#f48fb1','#fce4ec','#f9a8c9','#fde8ee'];
+for(let i=0;i<18;i++){
+  const p=document.createElement('div');p.className='petal';
+  const s=Math.random()*18+8;
+  const br=[`${40+Math.random()*30}% ${30+Math.random()*40}% ${40+Math.random()*30}% ${30+Math.random()*40}%`];
+  p.style.cssText=`left:${Math.random()*100}%;top:${-10}%;width:${s}px;height:${s*.6}px;animation-duration:${7+Math.random()*9}s;animation-delay:${Math.random()*12}s;border-radius:${br};background:${pcolors[Math.floor(Math.random()*pcolors.length)]};opacity:.55`;
+  pc.appendChild(p);
+}
+
+// ══════════════════════════════════════════════
+// POLAROID GALLERY
+// ══════════════════════════════════════════════
+const mems=[
+  {cap:"te",     rot:"-3deg",  td:".0s", src:"m.jpg"},
+  {cap:"amo",         rot:"2.5deg", td:".1s", src:"m1.jpg"},
+  {cap:"mucho",   rot:"-1.5deg",td:".2s", src:"m2.jpg"},
+  {cap:"mi",  rot:"3deg",   td:".3s", src:"m3.jpg"},
+  {cap:"mamita",    rot:"-2deg",  td:".4s", src:"m4.jpg"},
+  {cap:"hermosa",   rot:"1.5deg", td:".5s", src:"m5.jpg"},
+];
+const pgrid=document.getElementById('pgrid');
+mems.forEach((m,i)=>{
+  const el=document.createElement('div');
+  el.className='polaroid';el.style.setProperty('--r',m.rot);
+  el.style.transitionDelay=m.td;
+  el.innerHTML=`
+    <div class="pol-tape"></div>
+    <div class="pol-img">
+      <img src="${m.src}" alt="${m.cap}"
+           style="width:100%;height:100%;object-fit:cover;display:block;border-radius:1px"
+           onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\'width:100%;height:100%;background:linear-gradient(135deg,#fce4ec,#f48fb1);display:flex;align-items:center;justify-content:center;font-size:2.5rem\'>♡</div>'"/>
+    </div>
+    <p class="pol-caption">${m.cap}</p>`;
+  pgrid.appendChild(el);
+});
+
+// ══════════════════════════════════════════════
+// LETTER TYPEWRITER
+// ══════════════════════════════════════════════
+const ltexts=[
+  {id:'lt1',txt:"Para mi momi, querida mamá, gracias por todo lo que has hecho por mí, por el esfuerzo y dedicación que has tenido conmigo. Te amo, te quiero y no me imagino una vida sin mi mami 🫵🏻💕."},
+  {id:'lt2',txt:"No te lo digo siempre, pero eres una persona muy importante en mi vida. Te valoro mucho y no sabes lo mucho que te agradezco por siempre estar para mí."},
+  {id:'lt3',txt:"Me gustaría decirte esto personalmente, pero ya que no se puede, te hago esta página web para que veas que, aunque no te di una carta o un regalo, busqué una solución y este es mi regalo."},
+  {id:'lt4',txt:"Eres la mejor mamá del mundo mundial, te amo demasiado y espero un día volvernos a ver. FELIZ DÍA MOMI 💕🫶🏻"},
+];
+let ltDone=false;
+function typeLetters(){
+  if(ltDone)return;ltDone=true;
+  let delay=0;
+  ltexts.forEach(({id,txt})=>{
+    const el=document.getElementById(id);
+    let i=0;
+    setTimeout(()=>{
+      const iv=setInterval(()=>{
+        el.textContent+=txt[i++];
+        if(i>=txt.length)clearInterval(iv);
+      },22);
+    },delay);
+    delay+=txt.length*22+400;
+  });
+}
+
+// ══════════════════════════════════════════════
+// SCROLL ANIMATIONS
+// ══════════════════════════════════════════════
+const obs=new IntersectionObserver(ents=>{
+  ents.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('visible');
+      if(e.target===document.querySelector('.letter-wrap')){
+        setTimeout(typeLetters,600);
+      }
+    }
+  });
+},{threshold:.15,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.fade-up,.sec-label,.letter-wrap,.polaroid,.thanks-h,.thanks-msg,.thanks-label').forEach(el=>obs.observe(el));
+
+// ══════════════════════════════════════════════
+// PARALLAX HERO
+// ══════════════════════════════════════════════
+const hContent=document.querySelector('.hero-content');
+window.addEventListener('scroll',()=>{
+  const y=window.scrollY;
+  if(y<window.innerHeight&&hContent){
+    hContent.style.transform=`translateY(${y*.38}px)`;
+    hContent.style.opacity=Math.max(0,1-y/500);
+  }
+},{passive:true});
+
+const audioEl = document.getElementById('audio-el');
+const pbtn    = document.getElementById('pbtn');
+const pico    = document.getElementById('pico');
+const paico   = document.getElementById('paico');
+let playing   = false;
+let vTO;
+
+pbtn.addEventListener('click', () => {
+  if (playing) {
+    audioEl.pause();
+    playing = false;
+    pico.style.display  = '';
+    paico.style.display = 'none';
+    clearTimeout(vTO);
+    document.querySelectorAll('.vbar').forEach(b => b.style.height = '4px');
+  } else {
+    audioEl.play();
+    playing = true;
+    pico.style.display  = 'none';
+    paico.style.display = '';
+    animV();
+  }
+});
+
+function animV() {
+  if (!playing) return;
+  document.querySelectorAll('.vbar').forEach(b => {
+    b.style.height = (Math.random() * 15 + 4) + 'px';
+  });
+  vTO = setTimeout(animV, 110);
+}
+</script>
+</body>
+</html>
