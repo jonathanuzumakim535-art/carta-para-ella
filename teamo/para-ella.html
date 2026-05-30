@@ -561,7 +561,7 @@ function drawConst(){
     const g=cctx.createLinearGradient(sa.x,sa.y,sb.x,sb.y);
     g.addColorStop(0,'rgba(244,167,185,.8)');g.addColorStop(1,'rgba(212,175,122,.8)');
     cctx.strokeStyle=g;cctx.lineWidth=1.5;
-    cctx.shadowBlur=8;cctx.shadowColor='#f4a7b9';
+    cctx.shadowBlur=10;cctx.shadowColor='#f4a7b9';
     cctx.beginPath();cctx.moveTo(sa.x,sa.y);cctx.lineTo(sb.x,sb.y);cctx.stroke();
     cctx.shadowBlur=0;
   });
