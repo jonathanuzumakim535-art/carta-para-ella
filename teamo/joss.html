@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#050204">
+<title>Para ti ❤️</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Great+Vibes&family=Jost:wght@300;400&display=swap" rel="stylesheet">
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     1) CONFIGURACIÓN — aquí cambias todo lo personal. No hace falta
+        tocar nada más abajo.
+     ═══════════════════════════════════════════════════════════════════ -->
+<script>
+const CONFIG = {
+
+  // Nombre de ella. Puedes usar {nombre} dentro de cualquier texto.
+  nombre: "Ella",
+
+  // Título de la pestaña del navegador.
+  titulo: "Para {nombre} ❤️",
+
+  // ── CANCIÓN (YouTube) ────────────────────────────────────────────
+  // id: lo que va después de "v=" en la URL del video.
+  //     https://www.youtube.com/watch?v=XXXXXXXXXXX  →  id: "XXXXXXXXXXX"
+  // inicio: segundo en el que empieza (0 = desde el principio).
+  video: {
+    id: "EeXul6qefFs",
+    titulo: "Fuiste Mía",
+    artista: "Gerardo Ortiz",
+    inicio: 0
+  },
+
+  // ── CANCIÓN EN MP3 (sin reproductor visible) ─────────────────────
+  // Si pones aquí la ruta de tu archivo de audio, se usa EN LUGAR de
+  // YouTube y no se ve ningún reproductor: solo el botón central y el
+  // botón de pausa. Deja src vacío ("") para usar YouTube.
+  // Ejemplo: guarda el archivo junto a index.html, en una carpeta "musica":
+  //   src: "musica/fuiste-mia.mp3"
+  // Usa un audio que tengas derecho a usar (por ejemplo, uno que compraste).
+  audio: {
+    src: "",
+    inicio: 0      // segundo en el que empieza
+  },
+
+  // ── PANTALLA INICIAL ─────────────────────────────────────────────
+  intro: {
+    para:  "Para {nombre}",
+    boton: "Toca para escuchar",
+    nota:  "Ponte cómoda y sube un poco el volumen."
+  },
+
+  // ── MENSAJES QUE SE ESCRIBEN EN PANTALLA (en orden) ──────────────
+  // Puedes agregar, quitar o cambiar los que quieras.
+  mensajes: [
+    "Hay canciones que expresan cosas que a veces no sabemos cómo decir… ❤️",
+    "No sé si te imaginas lo especial que eres para mí, pero quería regalarte este pequeño detalle para que lo supieras."
+  ],
+
+  // ── LA CARTA FINAL ───────────────────────────────────────────────
+  // saludo y firma pueden quedar vacíos ("") si no los quieres.
+  carta: {
+    saludo: "Para {nombre},",
+    texto:  "Tal vez no encuentre siempre las palabras correctas para decirte lo que siento, pero hay algo que sí tengo claro: me gusta tu forma de ser, tu sonrisa y esa manera tan tuya de hacer que un momento sencillo se vuelva especial. No hice esta página esperando nada de ti; simplemente quería que supieras lo mucho que te aprecio y lo especial que eres para mí. ❤️",
+    firma:  ""            // ej.: "— Tu nombre"
+  },
+
+  // ── FOTOGRAFÍAS (opcional) ───────────────────────────────────────
+  // Aparecen como polaroids al final de la carta. Ejemplo:
+  //   { src: "fotos/1.jpg", pie: "Aquel día", alt: "Descripción de la foto" },
+  // "pie" y "alt" son opcionales. Si una foto no carga, se omite sola.
+  fotos: [
+    // { src: "fotos/1.jpg", pie: "Aquel día" },
+    // { src: "fotos/2.jpg", pie: "Me encantó este momento" },
+  ],
+
+  // ── TIEMPOS (milisegundos) ───────────────────────────────────────
+  tiempos: {
+    escritura: 52,            // velocidad de escritura por letra
+    lecturaBase: 1800,        // pausa mínima antes de cambiar de mensaje
+    lecturaPorCaracter: 28,   // pausa extra según el largo del mensaje
+    palabraCarta: 80          // ritmo al aparecer la carta (por palabra)
+  },
+
+  // ── TEXTOS DE LOS BOTONES ────────────────────────────────────────
+  textos: {
+    releer:    "Volver a leer mi mensaje",
+    pausar:    "Pausar música",
+    reanudar:  "Reanudar música",
+    repetir:   "Reproducir de nuevo",
+    sinMusica: "Leer mi mensaje sin música",
+    reintentar:"Reintentar"
+  }
+};
+</script>
+
+<style>
+:root{
+  --black:#050204; --wine:#5a0b1e; --wine-2:#7b1230; --red:#d3243f;
+  --rose:#f2b8c6; --rose-soft:#f8e1e6; --gold:#d9b45f; --gold-soft:#f3dc9b;
+  --player-space:262px;
+  --serif:'Cormorant Garamond',Georgia,'Times New Roman',serif;
+  --script:'Great Vibes','Snell Roundhand',cursive;
+  --sans:'Jost',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+@media (min-width:1100px){ :root{ --player-space:0px; } }
+body.nomusic, body.noplayer{ --player-space:0px; }
+
+*{ box-sizing:border-box; }
+html,body{
+  height:100%; margin:0; background:var(--black); color:var(--rose-soft);
+  font-family:var(--serif); overflow:hidden; -webkit-tap-highlight-color:transparent;
+}
+.sr-only{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+
+/* ── Fondo: cielo nocturno que aparece lentamente ───────────────── */
+.sky{
+  position:fixed; inset:0; z-index:0; overflow:hidden; opacity:0;
+  transition:opacity 7s ease;
+  background:
+    radial-gradient(130% 70% at 50% 112%, rgba(165,24,52,.55), transparent 62%),
+    linear-gradient(180deg,#07020a 0%,#16040e 45%,#2c0817 100%);
+}
+body.lit .sky{ opacity:1; }
+.blob{ position:absolute; width:90vmax; height:90vmax; border-radius:50%; will-change:transform; }
+.b1{ left:-38vmax; top:-34vmax; background:radial-gradient(circle,rgba(205,35,65,.38),rgba(205,35,65,0) 62%); animation:drift1 26s ease-in-out infinite alternate; }
+.b2{ right:-42vmax; top:4vmax;  background:radial-gradient(circle,rgba(130,18,48,.55),rgba(130,18,48,0) 62%); animation:drift2 32s ease-in-out infinite alternate; }
+.b3{ left:6vmax; bottom:-58vmax; background:radial-gradient(circle,rgba(240,120,150,.22),rgba(240,120,150,0) 62%); animation:drift3 38s ease-in-out infinite alternate; }
+@keyframes drift1{ to{ transform:translate3d(14vmax,10vmax,0) scale(1.12); } }
+@keyframes drift2{ to{ transform:translate3d(-16vmax,8vmax,0) scale(1.08); } }
+@keyframes drift3{ to{ transform:translate3d(10vmax,-12vmax,0) scale(1.15); } }
+
+#scene{ position:fixed; inset:0; width:100%; height:100%; z-index:1; display:block; }
+
+.burst{
+  position:fixed; left:50%; top:50%; z-index:2; width:60vmax; height:60vmax; margin:-30vmax 0 0 -30vmax;
+  border-radius:50%; opacity:0; pointer-events:none;
+  background:radial-gradient(circle,rgba(255,222,150,.55) 0%,rgba(215,40,70,.28) 35%,transparent 65%);
+}
+.burst.go{ animation:burst 3.4s ease-out forwards; }
+@keyframes burst{ 0%{ opacity:0; transform:scale(.05); } 18%{ opacity:.9; } 100%{ opacity:0; transform:scale(1.25); } }
+
+.vignette{
+  position:fixed; inset:0; z-index:3; pointer-events:none;
+  background:radial-gradient(120% 95% at 50% 50%, transparent 55%, rgba(0,0,0,.65) 100%);
+}
+
+/* ── Pantalla inicial ───────────────────────────────────────────── */
+.intro{
+  position:fixed; z-index:4; left:0; right:0; top:0; bottom:var(--player-space);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  padding:24px; text-align:center;
+}
+.heart{ opacity:.6; transition:opacity 3s ease, transform 3.6s ease; }
+.heart svg{
+  width:clamp(110px,26vw,160px); height:auto; display:block;
+  filter:drop-shadow(0 0 22px rgba(210,35,65,.5));
+  animation:breathe 4.6s ease-in-out infinite;
+}
+body.lit .heart{ opacity:0; transform:scale(1.6); }
+@keyframes breathe{ 0%,100%{ transform:scale(.96); opacity:.85; } 50%{ transform:scale(1.04); opacity:1; } }
+
+.for{
+  margin:22px 0 0; font-family:var(--script); font-size:clamp(1.9rem,6vw,2.6rem);
+  color:var(--gold-soft); text-shadow:0 0 18px rgba(217,180,95,.35); line-height:1.1;
+}
+.note{ margin:18px 0 0; max-width:30ch; font-size:1.05rem; font-style:italic; color:rgba(248,225,230,.62); }
+
+.btn{
+  font:400 12.5px/1 var(--sans); letter-spacing:.2em; text-transform:uppercase;
+  color:var(--rose-soft); background:linear-gradient(180deg,rgba(90,11,30,.55),rgba(40,6,16,.75));
+  border:1px solid rgba(217,180,95,.55); border-radius:999px; padding:15px 26px; cursor:pointer;
+  display:inline-flex; align-items:center; gap:12px; transition:transform .25s ease, box-shadow .35s ease, border-color .35s ease;
+  -webkit-appearance:none; appearance:none;
+}
+.btn:hover{ border-color:var(--gold-soft); box-shadow:0 0 26px rgba(215,40,70,.45); }
+.btn:active{ transform:scale(.97); }
+.btn:focus-visible{ outline:2px solid var(--gold-soft); outline-offset:3px; }
+.btn svg{ width:14px; height:14px; fill:currentColor; flex:none; }
+
+.cta{ margin-top:30px; padding:17px 32px; animation:ctaPulse 2.8s ease-in-out infinite; }
+@keyframes ctaPulse{ 0%,100%{ box-shadow:0 0 0 rgba(215,40,70,0); } 50%{ box-shadow:0 0 30px rgba(215,40,70,.5); } }
+
+.for,.note,.cta{ transition:opacity .9s ease, visibility 0s linear .9s; }
+body.started .for, body.started .note, body.started .cta{ opacity:0; visibility:hidden; pointer-events:none; }
+body.started .intro{ pointer-events:none; }
+
+.mini-heart{
+  position:fixed; z-index:5; top:calc(14px + env(safe-area-inset-top)); left:50%; width:32px; margin-left:-16px;
+  opacity:0; transition:opacity 3s ease 1.6s; pointer-events:none;
+}
+body.lit .mini-heart{ opacity:1; }
+.mini-heart svg{ width:100%; height:auto; display:block; filter:drop-shadow(0 0 10px rgba(235,55,85,.85)); animation:beat 1.6s ease-in-out infinite; }
+@keyframes beat{ 0%,100%{ transform:scale(1); } 8%{ transform:scale(1.16); } 16%{ transform:scale(1); } 28%{ transform:scale(1.1); } 42%{ transform:scale(1); } }
+
+/* ── Mensajes y carta ───────────────────────────────────────────── */
+.stage-text{
+  position:fixed; z-index:5; inset:0; padding:64px 5vw calc(var(--player-space) + 8px);
+  display:grid; grid-template-rows:minmax(0,1fr); grid-template-columns:minmax(0,1fr);
+  place-items:center; pointer-events:none;
+}
+.message{
+  grid-area:1/1; margin:0; max-width:21em; text-align:center; text-wrap:balance;
+  font-style:italic; font-weight:500; font-size:clamp(1.55rem,5.4vw,2.7rem); line-height:1.35;
+  color:#fde9ed; opacity:0; transform:translateY(10px); filter:blur(5px);
+  transition:opacity 1s ease, transform 1s ease, filter 1s ease;
+}
+.message.show{ opacity:1; transform:none; filter:none; }
+body.lit .message{ animation:textGlow 1.6s ease-in-out infinite; }
+@keyframes textGlow{
+  0%,100%{ text-shadow:0 0 14px rgba(225,50,80,.45),0 0 2px rgba(255,225,185,.5); }
+  8%{ text-shadow:0 0 32px rgba(238,62,92,.9),0 0 5px rgba(255,235,200,.85); }
+  16%{ text-shadow:0 0 18px rgba(225,50,80,.55),0 0 2px rgba(255,225,185,.55); }
+  28%{ text-shadow:0 0 26px rgba(232,56,86,.75),0 0 4px rgba(255,230,195,.7); }
+  42%{ text-shadow:0 0 14px rgba(225,50,80,.45),0 0 2px rgba(255,225,185,.5); }
+}
+.caret{ display:inline-block; width:2px; height:.95em; margin-left:4px; vertical-align:-.1em; background:var(--gold-soft); animation:blink 1s steps(1) infinite; }
+@keyframes blink{ 50%{ opacity:0; } }
+
+.letter{
+  grid-area:1/1; position:relative; width:min(100%,580px); max-height:100%; min-height:0;
+  display:flex; flex-direction:column; border-radius:18px; pointer-events:none;
+  background:linear-gradient(160deg,rgba(46,9,20,.88),rgba(16,3,9,.93));
+  -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px);
+  opacity:0; visibility:hidden; transform:translateY(18px) scale(.98);
+  transition:opacity 1.3s ease, transform 1.3s ease, visibility 0s linear 1.3s;
+}
+.letter.show{ opacity:1; visibility:visible; transform:none; pointer-events:auto; transition:opacity 1.3s ease, transform 1.3s ease; animation:glowBeat 1.6s ease-in-out infinite; }
+.letter::before{
+  content:""; position:absolute; inset:0; border-radius:inherit; padding:1px; pointer-events:none;
+  background:linear-gradient(110deg,rgba(217,180,95,.35) 20%,rgba(255,240,190,1) 50%,rgba(217,180,95,.35) 80%) 0 0/260% 100%;
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor; mask-composite:exclude;
+  animation:shimmer 6s linear infinite;
+}
+@keyframes shimmer{ to{ background-position:-260% 0; } }
+@keyframes glowBeat{
+  0%,100%{ box-shadow:0 18px 55px rgba(0,0,0,.6),0 0 22px rgba(190,25,55,.25); }
+  8%{ box-shadow:0 18px 55px rgba(0,0,0,.6),0 0 50px rgba(228,48,78,.58); }
+  16%{ box-shadow:0 18px 55px rgba(0,0,0,.6),0 0 28px rgba(200,30,60,.32); }
+  28%{ box-shadow:0 18px 55px rgba(0,0,0,.6),0 0 40px rgba(216,40,70,.45); }
+  42%{ box-shadow:0 18px 55px rgba(0,0,0,.6),0 0 22px rgba(190,25,55,.25); }
+}
+.letter-inner{
+  position:relative; overflow-y:auto; overscroll-behavior:contain; min-height:0;
+  padding:clamp(24px,5vw,42px) clamp(22px,5vw,44px);
+  scrollbar-width:thin; scrollbar-color:rgba(217,180,95,.4) transparent;
+}
+.greeting{ margin:0 0 14px; font-family:var(--script); font-size:clamp(2rem,6.5vw,2.7rem); line-height:1.1; color:var(--gold-soft); text-shadow:0 0 16px rgba(217,180,95,.3); }
+.body{ margin:0; font-weight:500; font-size:clamp(1.18rem,3.9vw,1.5rem); line-height:1.6; color:#f9e6e9; }
+.w{ opacity:0; filter:blur(3px); transition:opacity 1s ease, filter 1s ease; }
+.w.on{ opacity:1; filter:none; }
+.sign{ margin:20px 0 0; text-align:right; font-family:var(--script); font-size:clamp(1.7rem,5.5vw,2.2rem); color:var(--gold-soft); }
+.sign:empty{ display:none; }
+.reveal{ opacity:0; transform:translateY(8px); transition:opacity 1.1s ease, transform 1.1s ease; }
+.reveal.on{ opacity:1; transform:none; }
+
+.photos{ display:flex; gap:16px; overflow-x:auto; padding:22px 6px 10px; scroll-snap-type:x proximity; scrollbar-width:thin; scrollbar-color:rgba(217,180,95,.4) transparent; }
+.photos:empty{ display:none; }
+.polaroid{
+  flex:0 0 auto; width:148px; margin:0; padding:8px 8px 10px; background:#f8efe9; border-radius:3px;
+  transform:rotate(var(--r,0deg)); box-shadow:0 8px 22px rgba(0,0,0,.55); scroll-snap-align:center;
+}
+.polaroid img{ display:block; width:100%; aspect-ratio:1/1; object-fit:cover; background:#e7d9d0; }
+.polaroid figcaption{ margin-top:8px; font-family:var(--script); font-size:1.25rem; line-height:1.1; text-align:center; color:#5a0b1e; }
+.letter-actions{ display:flex; justify-content:center; margin-top:22px; }
+.letter-actions:not(.on){ pointer-events:none; }
+
+/* ── Botón pausar/reanudar, aviso y reproductor ─────────────────── */
+.toggle{
+  position:fixed; z-index:7; top:calc(10px + env(safe-area-inset-top)); right:12px; padding:12px 16px;
+  opacity:0; pointer-events:none; transition:opacity 1.2s ease 2s;
+}
+body.started:not(.nomusic) .toggle{ opacity:1; pointer-events:auto; }
+.toggle .lbl{ display:none; }
+@media (min-width:560px){ .toggle .lbl{ display:inline; } }
+
+.notice{
+  position:fixed; z-index:8; left:50%; top:calc(70px + env(safe-area-inset-top)); width:min(92vw,460px);
+  transform:translate(-50%,-14px); opacity:0; visibility:hidden; text-align:center;
+  padding:18px 20px; border-radius:14px; border:1px solid rgba(217,180,95,.5);
+  background:rgba(28,5,13,.94); -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px);
+  box-shadow:0 14px 40px rgba(0,0,0,.6); transition:opacity .5s ease, transform .5s ease, visibility 0s linear .5s;
+}
+.notice.show{ opacity:1; visibility:visible; transform:translate(-50%,0); transition:opacity .5s ease, transform .5s ease; }
+.notice p{ margin:0; font-size:1.12rem; line-height:1.45; color:var(--rose-soft); }
+.notice-actions{ display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-top:14px; }
+.notice-actions:empty{ display:none; }
+.notice .btn{ padding:12px 18px; font-size:11.5px; }
+
+.player-wrap{ position:fixed; z-index:6; left:50%; bottom:max(12px,env(safe-area-inset-bottom)); transform:translateX(-50%); width:min(92vw,340px); }
+@media (min-width:1100px){ .player-wrap{ left:auto; right:24px; bottom:24px; transform:none; } }
+.player-label{ margin:0 0 7px; text-align:center; font:300 11px/1 var(--sans); letter-spacing:.22em; text-transform:uppercase; color:var(--gold-soft); opacity:.85; }
+.player{
+  aspect-ratio:16/10; border-radius:14px; overflow:hidden; background:#000;
+  border:1px solid rgba(217,180,95,.4); box-shadow:0 10px 40px rgba(0,0,0,.6),0 0 24px rgba(190,25,55,.25);
+}
+body.lit .player{ animation:glowBeat 1.6s ease-in-out infinite; }
+.player iframe{ width:100%; height:100%; display:block; border:0; }
+body.nomusic .player-wrap, body.noplayer .player-wrap{ display:none; }
+
+/* Al pausar la música, todo lo animado se queda quieto. */
+body.is-paused *, body.is-paused *::before, body.is-paused *::after{ animation-play-state:paused !important; }
+
+@media (prefers-reduced-motion: reduce){
+  .blob, .burst, .cta{ animation:none !important; }
+  .sky{ transition-duration:2s; }
+}
+noscript{ position:fixed; inset:0; z-index:20; display:grid; place-items:center; background:#050204; padding:24px; text-align:center; font-size:1.3rem; }
+</style>
+</head>
+
+<body>
+<noscript>Esta página necesita JavaScript para mostrarse.</noscript>
+
+<!-- Degradado reutilizable del corazón -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <radialGradient id="hg" cx="40%" cy="30%" r="80%">
+      <stop offset="0" stop-color="#f0566e"/>
+      <stop offset=".45" stop-color="#b3153a"/>
+      <stop offset="1" stop-color="#4a0716"/>
+    </radialGradient>
+  </defs>
+</svg>
+
+<div class="sky" aria-hidden="true"><i class="blob b1"></i><i class="blob b2"></i><i class="blob b3"></i></div>
+<canvas id="scene" aria-hidden="true"></canvas>
+<div class="burst" id="burst" aria-hidden="true"></div>
+<div class="vignette" aria-hidden="true"></div>
+
+<main class="intro" id="intro">
+  <div class="heart" aria-hidden="true">
+    <svg viewBox="0 0 100 90"><path fill="url(#hg)" d="M50 86C20 63 3 45 3 26 3 12 14 3 28 3c9 0 17 5 22 13C55 8 63 3 72 3c14 0 25 9 25 23 0 19-17 37-47 60z"/></svg>
+  </div>
+  <p class="for" id="introPara"></p>
+  <button class="btn cta" id="cta" type="button">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg><span id="ctaText"></span>
+  </button>
+  <p class="note" id="introNote"></p>
+</main>
+
+<div class="mini-heart" aria-hidden="true">
+  <svg viewBox="0 0 100 90"><path fill="url(#hg)" d="M50 86C20 63 3 45 3 26 3 12 14 3 28 3c9 0 17 5 22 13C55 8 63 3 72 3c14 0 25 9 25 23 0 19-17 37-47 60z"/></svg>
+</div>
+
+<section class="stage-text" id="stageText">
+  <p class="message" id="message" aria-hidden="true"></p>
+  <article class="letter" id="letter" aria-label="Carta">
+    <div class="letter-inner" id="letterScroll">
+      <p class="greeting reveal" id="greeting"></p>
+      <p class="body" id="letterBody"></p>
+      <p class="sign reveal" id="sign"></p>
+      <div class="photos reveal" id="photos"></div>
+      <div class="letter-actions reveal" id="letterActions">
+        <button class="btn" id="btnReplay" type="button"></button>
+      </div>
+    </div>
+  </article>
+</section>
+<p class="sr-only" id="srMsg" aria-live="polite"></p>
+
+<button class="btn toggle" id="btnToggle" type="button"><span id="toggleIcon"></span><span class="lbl" id="toggleLbl"></span></button>
+
+<div class="notice" id="notice" role="status" aria-live="polite">
+  <p id="noticeText"></p>
+  <div class="notice-actions" id="noticeActions"></div>
+</div>
+
+<div class="player-wrap" id="playerWrap">
+  <p class="player-label" id="playerLabel"></p>
+  <div class="player"><div id="ytplayer"></div></div>
+</div>
+
+<script>
+(() => {
+'use strict';
+const C = CONFIG;
+/* Acepta el ID solo o un enlace completo de YouTube y se queda con los 11 caracteres del ID. */
+const VIDEO_ID = (() => {
+  const raw = String(C.video.id || '').trim();
+  const m = raw.match(/(?:[?&]v=|youtu\.be\/|embed\/|shorts\/)([A-Za-z0-9_-]{11})/) || raw.match(/^([A-Za-z0-9_-]{11})/);
+  return m ? m[1] : '';
+})();
+const AUDIO_SRC = String((C.audio && C.audio.src) || '').trim();
+const audio = AUDIO_SRC ? new Audio() : null;
+const $ = s => document.querySelector(s);
+const body = document.body;
+const t = s => String(s || '').split('{nombre}').join(C.nombre);
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+const els = {
+  intro: $('#intro'), para: $('#introPara'), cta: $('#cta'), ctaText: $('#ctaText'), note: $('#introNote'),
+  msg: $('#message'), srMsg: $('#srMsg'), letter: $('#letter'), scroller: $('#letterScroll'),
+  greeting: $('#greeting'), body: $('#letterBody'), sign: $('#sign'), photos: $('#photos'),
+  actions: $('#letterActions'), replay: $('#btnReplay'), toggle: $('#btnToggle'),
+  toggleIcon: $('#toggleIcon'), toggleLbl: $('#toggleLbl'), notice: $('#notice'),
+  noticeText: $('#noticeText'), noticeActions: $('#noticeActions'), playerWrap: $('#playerWrap'),
+  playerLabel: $('#playerLabel'), burst: $('#burst'), miniHeart: $('.mini-heart')
+};
+
+/* ── Estado ─────────────────────────────────────────────────────────
+   idle    → todavía no empezó la música
+   playing → la reproducción real está en marcha
+   paused  → pausada (todo se congela)
+   ended   → la canción terminó (los efectos se calman)
+   nomusic → modo "leer sin música" (solo si hubo un error)        */
+let state = 'idle', started = false, runId = 0;
+let player = null, playerReady = false, hintTimer = 0, userScrolled = false;
+
+function setState(s){
+  state = s;
+  body.classList.toggle('is-paused', s === 'paused');
+  updateToggle();
+}
+
+/* ── Textos iniciales ───────────────────────────────────────────── */
+document.title = t(C.titulo);
+els.para.textContent = t(C.intro.para);
+els.ctaText.textContent = t(C.intro.boton);
+els.note.textContent = t(C.intro.nota);
+els.playerLabel.textContent = '♪ ' + C.video.titulo + (C.video.artista ? ' · ' + C.video.artista : '');
+els.replay.textContent = C.textos.releer;
+els.greeting.textContent = t(C.carta.saludo);
+els.sign.textContent = t(C.carta.firma);
+if (!C.carta.saludo) els.greeting.style.display = 'none';
+
+/* Carta: cada palabra es un <span> para que aparezca poco a poco */
+const words = [];
+t(C.carta.texto).split(/(\s+)/).forEach(part => {
+  if (!part) return;
+  if (/^\s+$/.test(part)) { els.body.appendChild(document.createTextNode(' ')); return; }
+  const s = document.createElement('span');
+  s.className = 'w'; s.textContent = part;
+  els.body.appendChild(s); words.push(s);
+});
+
+/* Fotos */
+(C.fotos || []).forEach((f, i) => {
+  if (!f || !f.src) return;
+  const fig = document.createElement('figure');
+  fig.className = 'polaroid';
+  fig.style.setProperty('--r', ((i % 2 ? 1 : -1) * (1.2 + (i % 3) * 0.8)) + 'deg');
+  const img = new Image();
+  img.alt = f.alt || f.pie || '';
+  img.decoding = 'async';
+  img.onerror = () => fig.remove();
+  img.src = f.src;
+  fig.appendChild(img);
+  if (f.pie) { const cap = document.createElement('figcaption'); cap.textContent = f.pie; fig.appendChild(cap); }
+  els.photos.appendChild(fig);
+});
+
+/* ── Utilidades de tiempo ───────────────────────────────────────────
+   sleep() solo "gasta" tiempo mientras la música NO está en pausa, así
+   la escritura y la carta se detienen cuando ella pausa la canción.
+   Devuelve false si esa ejecución fue cancelada (p. ej. al releer).   */
+function sleep(ms, my){
+  return new Promise(res => {
+    let left = ms, prev = performance.now();
+    const iv = setInterval(() => {
+      const now = performance.now(), d = now - prev; prev = now;
+      if (my !== runId) { clearInterval(iv); res(false); return; }
+      if (state === 'paused') return;
+      left -= d;
+      if (left <= 0) { clearInterval(iv); res(true); }
+    }, 20);
+  });
+}
+const seg = (typeof Intl !== 'undefined' && Intl.Segmenter) ? new Intl.Segmenter('es', { granularity: 'grapheme' }) : null;
+const graphemes = s => seg ? Array.from(seg.segment(s), x => x.segment) : Array.from(s);
+
+/* ── Secuencia: mensaje 1 → mensaje 2 → carta ───────────────────── */
+function resetStage(){
+  els.msg.classList.remove('show'); els.msg.replaceChildren();
+  els.letter.classList.remove('show');
+  els.letter.querySelectorAll('.on').forEach(e => e.classList.remove('on'));
+  els.scroller.scrollTop = 0; userScrolled = false;
+}
+
+async function showMessage(text, my){
+  els.srMsg.textContent = text;
+  const box = els.msg;
+  box.classList.remove('show'); box.replaceChildren();
+  const tn = document.createTextNode(''), caret = document.createElement('span');
+  caret.className = 'caret'; box.append(tn, caret);
+  void box.offsetWidth; box.classList.add('show');
+  for (const g of graphemes(text)) {
+    tn.data += g;
+    let d = C.tiempos.escritura + (Math.random() * 30 - 10);
+    if (/[,.;:…]/.test(g)) d += 240;
+    if (!await sleep(d, my)) return false;
+  }
+  if (!await sleep(C.tiempos.lecturaBase + text.length * C.tiempos.lecturaPorCaracter, my)) return false;
+  box.classList.remove('show');
+  return await sleep(1100, my);
+}
+
+function autoscroll(el){
+  if (userScrolled) return;
+  const L = els.scroller, bottom = el.offsetTop + el.offsetHeight;
+  if (bottom > L.scrollTop + L.clientHeight - 40) {
+    L.scrollTo({ top: bottom - L.clientHeight + 70, behavior: reduce ? 'auto' : 'smooth' });
+  }
+}
+['wheel', 'touchstart', 'pointerdown'].forEach(ev => els.scroller.addEventListener(ev, () => { userScrolled = true; }, { passive: true }));
+
+async function showLetter(my){
+  els.letter.classList.add('show');
+  if (!await sleep(1400, my)) return false;
+  els.greeting.classList.add('on');
+  if (!await sleep(1100, my)) return false;
+  for (const w of words) {
+    w.classList.add('on'); autoscroll(w);
+    const pause = C.tiempos.palabraCarta + (/[.,;:…]$/.test(w.textContent) ? 260 : 0);
+    if (!await sleep(pause, my)) return false;
+  }
+  if (!await sleep(800, my)) return false;
+  if (C.carta.firma) { els.sign.classList.add('on'); autoscroll(els.sign); if (!await sleep(1000, my)) return false; }
+  if (els.photos.children.length) { els.photos.classList.add('on'); autoscroll(els.photos); if (!await sleep(1100, my)) return false; }
+  els.actions.classList.add('on'); autoscroll(els.actions);
+  return true;
+}
+
+async function runSequence(first){
+  const my = ++runId;
+  resetStage();
+  if (!await sleep(first ? 2800 : 700, my)) return;
+  for (const m of C.mensajes) { if (!await showMessage(t(m), my)) return; }
+  await showLetter(my);
+}
+
+/* ── Inicio de la experiencia ───────────────────────────────────── */
+function beginExperience(mode){
+  if (started) return;
+  started = true;
+  hideNotice(); clearTimeout(hintTimer);
+  setState(mode);
+  body.classList.add('lit', 'started');
+  if (mode === 'nomusic') body.classList.add('nomusic');
+  els.burst.classList.add('go');
+  runSequence(true);
+}
+
+/* ── Avisos ─────────────────────────────────────────────────────── */
+function showNotice(text, actions){
+  els.noticeText.textContent = text;
+  els.noticeActions.replaceChildren();
+  (actions || []).forEach(a => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'btn'; b.textContent = a.label;
+    b.addEventListener('click', a.fn);
+    els.noticeActions.appendChild(b);
+  });
+  els.notice.classList.add('show');
+}
+function hideNotice(){ els.notice.classList.remove('show'); }
+const actNoMusic = () => ({ label: C.textos.sinMusica, fn: () => beginExperience('nomusic') });
+
+/* ── Reproductor de YouTube ─────────────────────────────────────────
+   Los efectos arrancan SOLO cuando YouTube informa que la canción está
+   en estado PLAYING (reproducción real). Nunca hay autoplay.         */
+function loadYT(){
+  return new Promise((resolve, reject) => {
+    if (window.YT && window.YT.Player) return resolve();
+    const prev = window.onYouTubeIframeAPIReady;
+    window.onYouTubeIframeAPIReady = () => { if (prev) prev(); resolve(); };
+    const s = document.createElement('script');
+    s.src = 'https://www.youtube.com/iframe_api'; s.async = true;
+    s.onerror = () => reject(new Error('api'));
+    document.head.appendChild(s);
+    setTimeout(() => reject(new Error('timeout')), 12000);
+  });
+}
+
+function createPlayer(){
+  const vars = { autoplay: 0, controls: 1, rel: 0, playsinline: 1, modestbranding: 1, iv_load_policy: 3, fs: 1, start: C.video.inicio || 0 };
+  if (location.protocol === 'http:' || location.protocol === 'https:') vars.origin = location.origin;
+  player = new YT.Player('ytplayer', {
+    videoId: VIDEO_ID, width: '100%', height: '100%', playerVars: vars,
+    events: { onReady: () => { playerReady = true; }, onStateChange: onState, onError: onErr }
+  });
+}
+
+function onState(e){
+  switch (e.data) {
+    case 1: /* PLAYING */
+      clearTimeout(hintTimer); hideNotice();
+      if (!started) beginExperience('playing'); else setState('playing');
+      break;
+    case 2: /* PAUSED */
+      if (started) setState('paused');
+      break;
+    case 0: /* ENDED */
+      if (started) setState('ended');
+      break;
+  }
+}
+
+function onErr(e){
+  const code = e && e.data;
+  let msg = 'No pude reproducir la canción en este momento.';
+  if (code === 2) msg = 'El identificador del video no es válido. Revisa CONFIG.video.id.';
+  else if (code === 100) msg = 'El video no existe o es privado.';
+  else if (code === 101 || code === 150) msg = 'El dueño de este video no permite reproducirlo fuera de YouTube.';
+  else if (code === 153) msg = 'YouTube necesita que esta página esté publicada en internet (https://) o en un servidor local; no funciona abriendo el archivo con doble clic.';
+  else if (code === 5) msg = 'Hubo un problema con el reproductor del navegador.';
+  const acts = [];
+  if (!started) acts.push(actNoMusic());
+  showNotice(msg, acts);
+}
+
+/* Modo MP3: audio HTML5 nativo, sin reproductor visible. Los efectos
+   arrancan con el evento "playing" (cuando el sonido realmente empieza). */
+function initAudio(){
+  body.classList.add('noplayer');
+  audio.preload = 'auto';
+  audio.src = AUDIO_SRC;
+  const t0 = (C.audio && C.audio.inicio) || 0;
+  if (t0) audio.addEventListener('loadedmetadata', () => { try { audio.currentTime = t0; } catch (e) {} }, { once: true });
+  audio.addEventListener('playing', () => {
+    clearTimeout(hintTimer); hideNotice();
+    if (!started) beginExperience('playing'); else setState('playing');
+  });
+  audio.addEventListener('pause', () => { if (started && !audio.ended) setState('paused'); });
+  audio.addEventListener('ended', () => { if (started) setState('ended'); });
+  audio.addEventListener('error', () => {
+    const code = audio.error && audio.error.code;
+    let msg = 'No pude reproducir el audio.';
+    if (code === 4) msg = 'No encontré el archivo de audio o su formato no es compatible. Revisa la ruta en CONFIG.audio.src.';
+    else if (code === 2) msg = 'Se cortó la conexión mientras se cargaba el audio. Revisa tu internet.';
+    else if (code === 3) msg = 'El archivo de audio está dañado o no se pudo decodificar.';
+    showNotice(msg, started ? [] : [actNoMusic()]);
+  });
+}
+
+function initPlayer(){
+  if (audio) { initAudio(); return; }
+  if (!VIDEO_ID) {
+    body.classList.add('noplayer');
+    console.warn('Falta CONFIG.video.id: pega el ID del video de YouTube.');
+    return;
+  }
+  loadYT().then(createPlayer).catch(() => {
+    body.classList.add('noplayer');
+    showNotice('No se pudo cargar el reproductor de YouTube. Revisa tu conexión a internet.',
+      [{ label: C.textos.reintentar, fn: () => location.reload() }, ...(started ? [] : [actNoMusic()])]);
+  });
+}
+
+/* ── Botones ────────────────────────────────────────────────────── */
+els.cta.addEventListener('click', () => {
+  if (audio) {
+    audio.play().catch(err => {
+      if (err && err.name !== 'AbortError' && !audio.error) showNotice('No pude iniciar la música. Toca el botón otra vez.', []);
+    });
+    return;
+  }
+  if (!VIDEO_ID) {
+    showNotice('Falta configurar la canción: abre el archivo y pega el ID del video de YouTube en CONFIG.video.id.', [actNoMusic()]);
+    return;
+  }
+  if (!player || !playerReady) {
+    showNotice('El reproductor todavía se está preparando. Inténtalo de nuevo en un momento.', []);
+    return;
+  }
+  player.playVideo();
+  clearTimeout(hintTimer);
+  hintTimer = setTimeout(() => {
+    if (!started) showNotice('Si la música no empieza, toca el botón ▶ del reproductor de abajo.', []);
+  }, 3500);
+});
+
+const ICON_PAUSE = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h3.2v14H7zM13.8 5H17v14h-3.2z"/></svg>';
+const ICON_PLAY  = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>';
+function updateToggle(){
+  let label = C.textos.pausar, icon = ICON_PAUSE;
+  if (state === 'paused') { label = C.textos.reanudar; icon = ICON_PLAY; }
+  else if (state === 'ended') { label = C.textos.repetir; icon = ICON_PLAY; }
+  els.toggleIcon.innerHTML = icon;
+  els.toggleLbl.textContent = label;
+  els.toggle.setAttribute('aria-label', label);
+}
+
+els.toggle.addEventListener('click', () => {
+  if (audio) { if (audio.paused) audio.play().catch(() => {}); else audio.pause(); return; }
+  if (!player || !playerReady) return;
+  const s = player.getPlayerState();
+  if (s === 1 || s === 3) player.pauseVideo(); else player.playVideo();
+});
+
+els.replay.addEventListener('click', () => {
+  // Si la música estaba en pausa, la reanudamos para que la lectura continúe.
+  if (state === 'paused') {
+    if (audio) audio.play().catch(() => {});
+    else if (player && playerReady) player.playVideo();
+  }
+  runSequence(false);
+});
+
+/* ═══════════════════════════════════════════════════════════════════
+   EFECTOS (canvas): estrellas, luces rojas, pétalos, polvo y destellos.
+   El pulso es decorativo (≈ 37 latidos por minuto, fijo); NO analiza
+   el audio. Se sincroniza con el estado de reproducción: al pausar la
+   canción, todo se congela y al reanudar continúa.
+   ═══════════════════════════════════════════════════════════════════ */
+const cv = $('#scene'), ctx = cv.getContext('2d');
+let W = 0, H = 0, DPR = 1, cap = { petal: 20, bokeh: 10, dust: 40, glint: 16 };
+let simT = 0, lastT = performance.now(), intensity = 0, lastBeat = 0;
+const stars = [], bokeh = [], petals = [], dust = [], glints = [], anchors = [];
+
+function sprite(size, stops){
+  const c = document.createElement('canvas'); c.width = c.height = size;
+  const g = c.getContext('2d'), r = size / 2, gr = g.createRadialGradient(r, r, 0, r, r, r);
+  stops.forEach(([o, col]) => gr.addColorStop(o, col));
+  g.fillStyle = gr; g.fillRect(0, 0, size, size); return c;
+}
+const redGlow  = sprite(128, [[0, 'rgba(235,45,75,.85)'], [.4, 'rgba(200,25,55,.35)'], [1, 'rgba(160,10,40,0)']]);
+const goldGlow = sprite(64,  [[0, 'rgba(255,236,170,.95)'], [.35, 'rgba(240,190,90,.45)'], [1, 'rgba(220,160,60,0)']]);
+
+function petalSprite(c1, c2){
+  const c = document.createElement('canvas'); c.width = c.height = 64;
+  const g = c.getContext('2d'); g.translate(32, 32);
+  const gr = g.createLinearGradient(0, -28, 0, 28); gr.addColorStop(0, c1); gr.addColorStop(1, c2);
+  g.fillStyle = gr; g.beginPath(); g.moveTo(0, -28);
+  g.bezierCurveTo(24, -20, 26, 16, 0, 28); g.bezierCurveTo(-26, 16, -24, -20, 0, -28); g.fill();
+  g.strokeStyle = 'rgba(255,255,255,.16)'; g.lineWidth = 1.2;
+  g.beginPath(); g.moveTo(0, -22); g.quadraticCurveTo(2, 0, 0, 20); g.stroke();
+  return c;
+}
+const petalSprites = [
+  ['#f6c1cc', '#d9657f'], ['#e58ba0', '#a3173a'], ['#c9304f', '#7a0f2a'], ['#f2a7b7', '#c23a5a'], ['#8f1230', '#4f0a1c']
+].map(p => petalSprite(p[0], p[1]));
+
+function resize(){
+  DPR = Math.min(window.devicePixelRatio || 1, 2);
+  W = window.innerWidth; H = window.innerHeight;
+  cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  const small = Math.min(W, H) < 600, k = reduce ? 0.5 : 1;
+  cap = small ? { petal: 14 * k, bokeh: 8, dust: 34 * k, glint: 12 * k }
+              : { petal: 28 * k, bokeh: 14, dust: 64 * k, glint: 22 * k };
+  const nStars = Math.round(Math.min(220, (W * H) / 6500));
+  while (stars.length < nStars) stars.push({ x: Math.random(), y: Math.random(), r: .4 + Math.random() * 1.1, ph: Math.random() * 6.28, sp: .6 + Math.random() * 1.8 });
+  stars.length = nStars;
+  while (bokeh.length < cap.bokeh) bokeh.push({
+    x: Math.random() * W, y: Math.random() * H, r: 34 + Math.random() * 80,
+    vy: -(5 + Math.random() * 9), a: .05 + Math.random() * .11, ph: Math.random() * 6.28
+  });
+  bokeh.length = cap.bokeh;
+}
+let rt = 0;
+window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(resize, 120); });
+resize();
+
+function refreshAnchors(){
+  anchors.length = 0;
+  if (!body.classList.contains('lit')) return;
+  const add = el => { const r = el.getBoundingClientRect(); if (r.width > 20 && r.height > 10) anchors.push(r); };
+  add(els.miniHeart);
+  if (els.msg.classList.contains('show')) add(els.msg);
+  if (els.letter.classList.contains('show')) add(els.letter);
+  if (!body.classList.contains('noplayer') && !body.classList.contains('nomusic')) add(els.playerWrap);
+}
+setInterval(refreshAnchors, 500);
+
+function spawnGlint(){
+  let x, y;
+  if (anchors.length && Math.random() < .7) {
+    const r = anchors[(Math.random() * anchors.length) | 0];
+    let e = Math.random() * 2 * (r.width + r.height);
+    if (e < r.width) { x = r.left + e; y = r.top; }
+    else if ((e -= r.width) < r.height) { x = r.right; y = r.top + e; }
+    else if ((e -= r.height) < r.width) { x = r.right - e; y = r.bottom; }
+    else { e -= r.width; x = r.left; y = r.bottom - e; }
+    x += (Math.random() - .5) * 26; y += (Math.random() - .5) * 26;
+  } else { x = Math.random() * W; y = Math.random() * H; }
+  glints.push({ x, y, age: 0, life: 1.1 + Math.random() * 1.3, s: 3 + Math.random() * 5 });
+}
+
+function drawStars(){
+  ctx.fillStyle = '#fff3e4';
+  for (const s of stars) {
+    ctx.globalAlpha = .25 + .75 * (.5 + .5 * Math.sin(simT * s.sp + s.ph));
+    ctx.beginPath(); ctx.arc(s.x * W, s.y * H, s.r, 0, 6.2832); ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+}
+
+function drawFx(dt){
+  const I = intensity;
+  const b = (simT % 1.6) / 1.6;
+  const pulse = Math.exp(-Math.pow((b - .08) * 10, 2)) + .6 * Math.exp(-Math.pow((b - .30) * 10, 2));
+  if (b < lastBeat && I > .5 && glints.length < cap.glint) { spawnGlint(); spawnGlint(); }
+  lastBeat = b;
+
+  // Luces rojas suaves (bokeh)
+  ctx.globalCompositeOperation = 'lighter';
+  for (const o of bokeh) {
+    o.y += o.vy * dt; o.x += Math.sin(simT * .2 + o.ph) * 6 * dt;
+    if (o.y < -o.r) { o.y = H + o.r; o.x = Math.random() * W; }
+    ctx.globalAlpha = Math.min(1, o.a * I * (.7 + .5 * pulse));
+    ctx.drawImage(redGlow, o.x - o.r, o.y - o.r, o.r * 2, o.r * 2);
+  }
+
+  // Polvo dorado
+  if (dust.length < cap.dust * I && Math.random() < dt * 14) {
+    dust.push({ x: Math.random() * W, y: H + 6, r: .6 + Math.random() * 1.5, vy: -(10 + Math.random() * 22), ph: Math.random() * 6.28, sp: 1 + Math.random() * 2 });
+  }
+  ctx.fillStyle = '#ffe3a0';
+  for (let i = dust.length - 1; i >= 0; i--) {
+    const d = dust[i]; d.y += d.vy * dt; d.x += Math.sin(simT * .8 + d.ph) * 8 * dt;
+    if (d.y < -8) { dust.splice(i, 1); continue; }
+    ctx.globalAlpha = I * (.25 + .6 * (.5 + .5 * Math.sin(simT * d.sp + d.ph)));
+    ctx.beginPath(); ctx.arc(d.x, d.y, d.r, 0, 6.2832); ctx.fill();
+  }
+
+  // Destellos dorados
+  if (glints.length < cap.glint * I && Math.random() < dt * 5 * I) spawnGlint();
+  ctx.strokeStyle = '#fff3c4'; ctx.lineWidth = 1;
+  for (let i = glints.length - 1; i >= 0; i--) {
+    const g = glints[i]; g.age += dt;
+    if (g.age >= g.life) { glints.splice(i, 1); continue; }
+    const a = Math.sin(Math.PI * g.age / g.life) * Math.min(1, I * 1.4), s = g.s;
+    ctx.globalAlpha = a;
+    ctx.drawImage(goldGlow, g.x - s * 2.2, g.y - s * 2.2, s * 4.4, s * 4.4);
+    ctx.beginPath();
+    ctx.moveTo(g.x - s * 1.9, g.y); ctx.lineTo(g.x + s * 1.9, g.y);
+    ctx.moveTo(g.x, g.y - s * 1.9); ctx.lineTo(g.x, g.y + s * 1.9);
+    ctx.stroke();
+  }
+  ctx.globalCompositeOperation = 'source-over';
+
+  // Pétalos de rosa
+  if (petals.length < cap.petal * I && Math.random() < dt * 2.2) {
+    petals.push({
+      x: Math.random() * W, y: -24, size: 15 + Math.random() * 14, rot: Math.random() * 6.28,
+      vr: (Math.random() - .5) * 1.4, vx: (Math.random() - .5) * 14, vy: 26 + Math.random() * 34,
+      sway: .5 + Math.random() * .9, ph: Math.random() * 6.28, fl: .6 + Math.random() * 1.1,
+      flip: Math.random() * 6.28, a: .7 + Math.random() * .25, img: petalSprites[(Math.random() * petalSprites.length) | 0]
+    });
+  }
+  for (let i = petals.length - 1; i >= 0; i--) {
+    const p = petals[i];
+    p.y += p.vy * dt; p.x += (p.vx + Math.sin(simT * p.sway + p.ph) * 22) * dt;
+    p.rot += p.vr * dt; p.flip += p.fl * dt;
+    if (p.y > H + 30) { petals.splice(i, 1); continue; }
+    ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot);
+    ctx.scale(.35 + .65 * Math.abs(Math.cos(p.flip)), 1);
+    ctx.globalAlpha = p.a * Math.min(1, I * 1.5) * Math.min(1, p.y / 50 + .2);
+    ctx.drawImage(p.img, -p.size / 2, -p.size / 2, p.size, p.size);
+    ctx.restore();
+  }
+  ctx.globalAlpha = 1;
+}
+
+function frame(now){
+  requestAnimationFrame(frame);
+  const dt = Math.min(.05, (now - lastT) / 1000); lastT = now;
+  if (state === 'paused') return;           // pausa real: el lienzo se queda quieto
+  simT += dt;
+  const target = state === 'playing' ? 1 : state === 'nomusic' ? .85 : state === 'ended' ? .3 : 0;
+  intensity += (target - intensity) * Math.min(1, dt * .7);
+  ctx.clearRect(0, 0, W, H);
+  drawStars();
+  if (intensity > .02) drawFx(dt);
+}
+requestAnimationFrame(frame);
+
+/* ── Arranque ───────────────────────────────────────────────────── */
+updateToggle();
+initPlayer();
+})();
+</script>
+</body>
+</html>
